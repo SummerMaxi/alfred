@@ -8,6 +8,7 @@ import { ThemeProvider } from 'next-themes';
 import { ReactNode } from 'react';
 import { shape, shapeSepolia } from 'viem/chains';
 import { WagmiProvider } from 'wagmi';
+import { Toaster } from 'sonner';
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
             initialChain={config.chainId === shape.id ? shape : shapeSepolia}
           >
             {children}
+            <Toaster />
           </RainbowKitProvider>
         </QueryClientProvider>
       </WagmiProvider>
