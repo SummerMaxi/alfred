@@ -38,7 +38,7 @@ interface Contract {
 
 export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);
-  const [selectedOwnedContract, setSelectedOwnedContract] = useState<any | null>(null);
+  const [selectedOwnedContract, setSelectedOwnedContract] = useState<Contract | null>(null);
   const { mode } = useMode();
   const { data: ownersData } = useAllNftOwners();
   const { data: deployersData } = useDeployersLeaderboard();
@@ -69,7 +69,7 @@ export default function Home() {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[800px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[600px]">
           {/* Left Column - Contract Lists */}
           <Card className="flex flex-col h-full">
             <CardHeader className="flex-shrink-0">
@@ -115,7 +115,7 @@ export default function Home() {
                   ) : (
                     <>
                       <Hammer className="h-5 w-5" />
-                      Contract Deployers
+                      Contract Owners Leaderboard
                     </>
                   )}
                 </div>

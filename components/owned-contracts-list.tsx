@@ -9,6 +9,7 @@ import { FileText, Hash, Network, ExternalLink, ChevronLeft, ChevronRight } from
 import { useAccount } from 'wagmi';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { AddressDisplay } from '@/components/address-display';
 
 interface OwnedContract {
   address: string;
@@ -96,7 +97,7 @@ export function OwnedContractsList({ selectedContract, onContractSelect }: Owned
         <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No NFT Collections Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          You don't own NFTs from any collections yet
+          You don&apos;t own NFTs from any collections yet
         </p>
       </div>
     );
@@ -109,8 +110,8 @@ export function OwnedContractsList({ selectedContract, onContractSelect }: Owned
   const currentContracts = data.contracts.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-3">
-      <div className="space-y-3">
+    <div className="flex flex-col h-full">
+      <div className="flex-1 space-y-3 overflow-auto">
         {currentContracts.map((contract) => (
           <div
             key={contract.address}
@@ -142,8 +143,12 @@ export function OwnedContractsList({ selectedContract, onContractSelect }: Owned
                     <ExternalLink className="h-3 w-3" />
                   </Link>
                 </div>
-                <div className="text-xs text-muted-foreground">
-                  Deployed by: {contract.contractDeployer.slice(0, 6)}...{contract.contractDeployer.slice(-4)}
+                <div className="text-xs text-muted-foreground flex items-center gap-1">
+                  <span>Deployed by:</span>
+                  <AddressDisplay 
+                    address={contract.contractDeployer} 
+                    className="text-xs"
+                  />
                 </div>
               </div>
               
@@ -173,9 +178,10 @@ export function OwnedContractsList({ selectedContract, onContractSelect }: Owned
         ))}
       </div>
 
+      
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-2 border-t">
+        <div className="flex items-center justify-between pt-3 mt-auto border-t flex-shrink-0">
           <div className="text-sm text-muted-foreground">
             {startIndex + 1}-{Math.min(endIndex, data.contracts.length)} of {data.contracts.length}
           </div>

@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronLeft, ChevronRight, Copy, ExternalLink, Users, Trophy } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, Trophy } from 'lucide-react';
 import { toast } from 'sonner';
-import Link from 'next/link';
+import { AddressDisplay } from '@/components/address-display';
 
 const ITEMS_PER_PAGE = 20;
 
@@ -54,7 +54,7 @@ export function AggregatedLeaderboard() {
         <Trophy className="mx-auto h-10 w-10 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No NFT Owners Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          Your deployed contracts don't have any NFT owners yet
+          Your deployed contracts don&apos;t have any NFT owners yet
         </p>
       </div>
     );
@@ -88,9 +88,10 @@ export function AggregatedLeaderboard() {
                   </div>
                   <div className="space-y-1">
                     <div className="flex items-center gap-2">
-                      <code className="text-sm font-mono">
-                        {owner.ownerAddress.slice(0, 6)}...{owner.ownerAddress.slice(-4)}
-                      </code>
+                      <AddressDisplay 
+                        address={owner.ownerAddress} 
+                        className="text-sm"
+                      />
                       <Button
                         variant="ghost"
                         size="sm"

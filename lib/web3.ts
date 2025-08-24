@@ -9,7 +9,7 @@ import { mainnet, shape, shapeSepolia } from 'viem/chains';
 export const wagmiConfig = getDefaultConfig({
   appName: 'Alfred',
   ssr: true,
-  projectId: config.walletConnectProjectId,
+  projectId: config.walletConnectProjectId || 'fallback-project-id',
   chains: [shape, shapeSepolia, mainnet],
   transports: {
     [shape.id]: http(`https://shape-mainnet.g.alchemy.com/v2/${config.alchemyKey}`, {

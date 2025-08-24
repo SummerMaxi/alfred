@@ -2,14 +2,30 @@
 
 import { useState } from 'react';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ChevronLeft, ChevronRight, Copy, Code, Hammer } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Copy, ExternalLink, Hammer } from 'lucide-react';
 import { toast } from 'sonner';
+import Link from 'next/link';
+import { AddressDisplay } from '@/components/address-display';
 
 const ITEMS_PER_PAGE = 20;
+
+// Map chain names to explorer URLs
+const getExplorerUrl = (chain: string) => {
+  switch (chain) {
+    case 'Ethereum':
+      return 'https://etherscan.io';
+    case 'Base':
+      return 'https://basescan.org';
+    case 'Shape':
+      return 'https://shapescan.xyz';
+    default:
+      return 'https://etherscan.io';
+  }
+};
 
 export function DeployersLeaderboard() {
   const [currentPage, setCurrentPage] = useState(1);
@@ -53,7 +69,7 @@ export function DeployersLeaderboard() {
         <Hammer className="mx-auto h-10 w-10 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No Deployers Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          You don't own NFTs from any collections yet
+          You don&apos;t own NFTs from any collections yet
         </p>
       </div>
     );
@@ -88,9 +104,18 @@ export function DeployersLeaderboard() {
                     </div>
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <code className="text-sm font-mono">
-                          {deployer.deployerAddress.slice(0, 6)}...{deployer.deployerAddress.slice(-4)}
-                        </code>
+                        <AddressDisplay 
+                          address={deployer.deployerAddress} 
+                          className="text-sm"
+                        />
+                        <Link
+                          href={`${getExplorerUrl(deployer.contractsDeployed[0]?.chain || 'Ethereum')}/address/${deployer.deployerAddress}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="hover:text-foreground"
+                        >
+                          <ExternalLink className="h-3 w-3" />
+                        </Link>
                         <Button
                           variant="ghost"
                           size="sm"
@@ -112,26 +137,6 @@ export function DeployersLeaderboard() {
                   </div>
                 </div>
 
-                {/* Show deployed contracts */}
-                <div className="ml-9 space-y-1">
-                  {deployer.contractsDeployed.slice(0, 3).map((contract) => (
-                    <div key={contract.contractAddress} className="flex items-center justify-between text-xs">
-                      <div className="flex items-center gap-2 text-muted-foreground">
-                        <Code className="h-3 w-3" />
-                        <span className="truncate max-w-[200px]">{contract.contractName}</span>
-                        <Badge variant="outline" className="text-xs">{contract.tokenType}</Badge>
-                      </div>
-                      <div className="text-muted-foreground">
-                        {parseInt(contract.totalSupply).toLocaleString()} supply
-                      </div>
-                    </div>
-                  ))}
-                  {deployer.contractsDeployed.length > 3 && (
-                    <div className="text-xs text-muted-foreground ml-5">
-                      +{deployer.contractsDeployed.length - 3} more contracts...
-                    </div>
-                  )}
-                </div>
               </div>
             </Card>
           );

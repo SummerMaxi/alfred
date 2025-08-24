@@ -17,7 +17,7 @@ export function NftContracts() {
         <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">Connect Your Wallet</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          Connect your wallet to view the NFT contracts you've deployed
+          Connect your wallet to view the NFT contracts you&apos;ve deployed
         </p>
       </div>
     );
@@ -66,7 +66,7 @@ export function NftContracts() {
         <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No Deployed Contracts Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          You haven't deployed any NFT contracts yet
+          You haven&apos;t deployed any NFT contracts yet
         </p>
       </div>
     );

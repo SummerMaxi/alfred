@@ -95,7 +95,7 @@ export function ContractList({ selectedContract, onContractSelect }: ContractLis
         <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No Contracts Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          You haven't deployed any NFT contracts yet
+          You haven&apos;t deployed any NFT contracts yet
         </p>
       </div>
     );
@@ -108,8 +108,8 @@ export function ContractList({ selectedContract, onContractSelect }: ContractLis
   const currentContracts = data.contracts.slice(startIndex, endIndex);
 
   return (
-    <div className="space-y-3">
-      <div className="space-y-3">
+    <div className="flex flex-col h-full">
+      <div className="flex-1 space-y-3 overflow-auto">
         {currentContracts.map((contract) => (
           <div
             key={contract.address}
@@ -160,9 +160,10 @@ export function ContractList({ selectedContract, onContractSelect }: ContractLis
         ))}
       </div>
 
+      
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex items-center justify-between pt-2 border-t">
+        <div className="flex items-center justify-between pt-3 mt-auto border-t flex-shrink-0">
           <div className="text-sm text-muted-foreground">
             {startIndex + 1}-{Math.min(endIndex, data.contracts.length)} of {data.contracts.length}
           </div>

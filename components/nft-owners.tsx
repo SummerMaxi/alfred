@@ -80,7 +80,7 @@ export function NftOwners({ contractAddress, contractName, chainName, explorerUr
         <Users className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">No Owners Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          This contract doesn't have any NFT owners yet
+          This contract doesn&apos;t have any NFT owners yet
         </p>
       </div>
     );
