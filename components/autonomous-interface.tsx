@@ -235,6 +235,5 @@ export function AutonomousInterface() {
         </div>
       </div>
     </div>
-  </div>
   );
 }
