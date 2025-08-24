@@ -6,7 +6,7 @@ export default function Home() {
       <div className="text-center space-y-4">
         <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Alfred</h1>
         <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          Your personal NFT dashboard. Connect your wallet to explore and manage your digital collectibles across Shape Network.
+          Your NFT contract deployment dashboard. Connect your wallet to view and manage the NFT contracts you've deployed.
         </p>
       </div>
 

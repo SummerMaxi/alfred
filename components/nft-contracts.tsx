@@ -1,10 +1,9 @@
 'use client';
 
 import { useNftContracts } from '@/hooks/use-nft-contracts';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ExternalLink, ImageIcon, Users } from 'lucide-react';
+import { ExternalLink, FileText, Calendar, Hash } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import Link from 'next/link';
 
@@ -15,10 +14,10 @@ export function NftContracts() {
   if (!isConnected) {
     return (
       <div className="text-center py-12">
-        <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+        <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
         <h3 className="text-lg font-semibold text-muted-foreground">Connect Your Wallet</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          Connect your wallet to view your NFT collections
+          Connect your wallet to view the NFT contracts you've deployed
         </p>
       </div>
     );
@@ -26,24 +25,28 @@ export function NftContracts() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {Array.from({ length: 6 }).map((_, i) => (
-          <Card key={i} className="overflow-hidden">
-            <div className="aspect-square bg-muted">
-              <Skeleton className="w-full h-full" />
-            </div>
-            <CardHeader>
-              <Skeleton className="h-6 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-            </CardHeader>
-            <CardContent>
-              <div className="flex justify-between items-center">
-                <Skeleton className="h-5 w-20" />
-                <Skeleton className="h-5 w-16" />
+      <div className="space-y-4">
+        <div className="space-y-2">
+          <Skeleton className="h-8 w-64" />
+          <Skeleton className="h-4 w-48" />
+        </div>
+        <div className="space-y-3">
+          {Array.from({ length: 5 }).map((_, i) => (
+            <div key={i} className="border rounded-lg p-4">
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <Skeleton className="h-6 w-48" />
+                  <Skeleton className="h-5 w-20" />
+                </div>
+                <div className="flex items-center gap-4">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-4 w-24" />
+                  <Skeleton className="h-4 w-28" />
+                </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
@@ -51,7 +54,7 @@ export function NftContracts() {
   if (error) {
     return (
       <div className="text-center py-12">
-        <div className="text-destructive text-sm mb-2">Error loading NFT contracts</div>
+        <div className="text-destructive text-sm mb-2">Error loading deployed contracts</div>
         <p className="text-muted-foreground text-sm">{error.message}</p>
       </div>
     );
@@ -60,10 +63,10 @@ export function NftContracts() {
   if (!data?.contracts || data.contracts.length === 0) {
     return (
       <div className="text-center py-12">
-        <ImageIcon className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-        <h3 className="text-lg font-semibold text-muted-foreground">No NFT Collections Found</h3>
+        <FileText className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
+        <h3 className="text-lg font-semibold text-muted-foreground">No Deployed Contracts Found</h3>
         <p className="text-sm text-muted-foreground mt-2">
-          This wallet doesn't own any NFT collections yet
+          You haven't deployed any NFT contracts yet
         </p>
       </div>
     );
@@ -71,95 +74,86 @@ export function NftContracts() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold tracking-tight">Your NFT Collections</h2>
-          <p className="text-muted-foreground">
-            {data.totalCount} collection{data.totalCount !== 1 ? 's' : ''} found
-          </p>
-        </div>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-bold tracking-tight">Your Deployed NFT Contracts</h2>
+        <p className="text-muted-foreground">
+          {data.totalCount} contract{data.totalCount !== 1 ? 's' : ''} deployed by your address
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="space-y-3">
         {data.contracts.map((contract) => (
-          <Card key={contract.address} className="overflow-hidden hover:shadow-lg transition-shadow">
-            <div className="aspect-square bg-muted relative overflow-hidden">
-              {contract.opensea?.imageUrl ? (
-                <img
-                  src={contract.opensea.imageUrl}
-                  alt={contract.name}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                    e.currentTarget.nextElementSibling?.classList.remove('hidden');
-                  }}
-                />
-              ) : null}
-              <div className="hidden absolute inset-0 flex items-center justify-center bg-muted">
-                <ImageIcon className="h-12 w-12 text-muted-foreground" />
-              </div>
-              {contract.opensea?.bannerImageUrl && (
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              )}
-            </div>
-            
-            <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="space-y-1 flex-1">
-                  <CardTitle className="text-lg leading-6">
-                    {contract.opensea?.collectionName || contract.name || 'Unnamed Collection'}
-                  </CardTitle>
-                  <CardDescription className="text-sm">
-                    {contract.symbol} • {contract.tokenType}
-                  </CardDescription>
+          <div
+            key={contract.address}
+            className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+          >
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-lg">
+                    {contract.opensea?.collectionName || contract.name || 'Unnamed Contract'}
+                  </h3>
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <Hash className="h-3 w-3" />
+                    <code className="text-xs font-mono">{contract.address}</code>
+                    <Link
+                      href={`https://etherscan.io/address/${contract.address}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-foreground"
+                    >
+                      <ExternalLink className="h-3 w-3" />
+                    </Link>
+                  </div>
                 </div>
-                {contract.opensea?.externalUrl && (
+                <div className="text-right space-y-1">
+                  <Badge variant="secondary" className="text-xs">
+                    {contract.tokenType}
+                  </Badge>
+                  {contract.symbol && (
+                    <div className="text-sm text-muted-foreground font-mono">
+                      {contract.symbol}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <FileText className="h-3 w-3" />
+                  <span>{parseInt(contract.totalSupply).toLocaleString()} total supply</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3 w-3" />
+                  <span>Block #{contract.deployedBlockNumber.toLocaleString()}</span>
+                </div>
+                {contract.opensea?.floorPrice && (
+                  <div className="flex items-center gap-1">
+                    <span>Floor: {contract.opensea.floorPrice} ETH</span>
+                  </div>
+                )}
+              </div>
+
+              {contract.opensea?.description && (
+                <p className="text-sm text-muted-foreground line-clamp-2 mt-2">
+                  {contract.opensea.description}
+                </p>
+              )}
+
+              {contract.opensea?.externalUrl && (
+                <div className="mt-2">
                   <Link
                     href={contract.opensea.externalUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-muted-foreground hover:text-foreground"
+                    className="text-sm text-blue-600 hover:text-blue-800 hover:underline"
                   >
-                    <ExternalLink className="h-4 w-4" />
+                    View Collection →
                   </Link>
-                )}
-              </div>
-              
-              {contract.opensea?.description && (
-                <p className="text-xs text-muted-foreground line-clamp-2">
-                  {contract.opensea.description}
-                </p>
-              )}
-            </CardHeader>
-
-            <CardContent className="pt-0">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-1 text-sm text-muted-foreground">
-                  <Users className="h-3 w-3" />
-                  <span>{parseInt(contract.totalSupply).toLocaleString()} items</span>
                 </div>
-                {contract.opensea?.floorPrice && (
-                  <Badge variant="secondary" className="text-xs">
-                    Floor: {contract.opensea.floorPrice} ETH
-                  </Badge>
-                )}
-              </div>
-              
-              <div className="flex items-center justify-between">
-                <Badge variant="outline" className="text-xs">
-                  {contract.opensea?.safelistRequestStatus || 'Unknown'}
-                </Badge>
-                <Link
-                  href={`https://etherscan.io/address/${contract.address}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-muted-foreground hover:text-foreground hover:underline"
-                >
-                  View Contract
-                </Link>
-              </div>
-            </CardContent>
-          </Card>
+              )}
+            </div>
+          </div>
         ))}
       </div>
     </div>

@@ -62,7 +62,18 @@ export function useNftContracts() {
       }
 
       const data = await response.json();
-      return data;
+      
+      // Filter contracts to only show those deployed by the connected address
+      const deployedContracts = data.contracts.filter((contract: NftContract) => 
+        contract.contractDeployer && 
+        contract.contractDeployer.toLowerCase() === address.toLowerCase()
+      );
+      
+      return {
+        ...data,
+        contracts: deployedContracts,
+        totalCount: deployedContracts.length
+      };
     },
     enabled: isConnected && !!address && !!config.alchemyKey,
     refetchOnWindowFocus: false,
