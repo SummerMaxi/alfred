@@ -21,6 +21,7 @@ import { Download } from 'lucide-react';
 export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);
   const [selectedOwnedContract, setSelectedOwnedContract] = useState<Contract | null>(null);
+  const [manualAddress, setManualAddress] = useState('');
   const { mode } = useMode();
   const { interfaceMode } = useInterfaceMode();
   const { data: ownersData } = useAllNftOwners();
@@ -85,6 +86,28 @@ export default function Home() {
                 <Download className="h-4 w-4 mr-2" />
                 Export Contracts CSV
               </Button>
+              
+              {/* Manual Address Input */}
+              <div className="flex items-center gap-2">
+                <Input 
+                  placeholder="Enter wallet address (0x...)"
+                  value={manualAddress}
+                  onChange={(e) => setManualAddress(e.target.value)}
+                  className="w-64"
+                />
+                <Button 
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    if (manualAddress.trim()) {
+                      window.location.href = `/?address=${manualAddress.trim()}`;
+                    }
+                  }}
+                  disabled={!manualAddress.trim()}
+                >
+                  Analyze Address
+                </Button>
+              </div>
             </div>
           </div>
 

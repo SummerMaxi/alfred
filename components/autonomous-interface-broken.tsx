@@ -44,6 +44,7 @@ export function AutonomousInterface() {
   }, [messages]);
 
   useEffect(() => {
+    // Add initial greeting message
     if (messages.length === 0) {
       const userName = ensName ? ensName.replace('.eth', '').split('.')[0] : 'Master';
       const greeting = {
@@ -72,6 +73,7 @@ export function AutonomousInterface() {
     setIsLoading(true);
 
     try {
+      // Prepare user data context
       const userData = {
         address,
         ensName,
@@ -206,8 +208,9 @@ export function AutonomousInterface() {
           </div>
           <div ref={messagesEndRef} />
         </div>
+      </div>
 
-        <div className="border-t bg-background p-4">
+      <div className="border-t bg-background p-4">
           <div className="flex gap-3">
             <Input
               value={input}
