@@ -18,11 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Builder Kit - Shape Network',
-    template: '%s | Builder Kit - Shape Network',
+    default: 'Alfred - Shape Network',
+    template: '%s | Alfred - Shape Network',
   },
   description:
-    'A modern & minimal web3 starter kit for building decentralized applications with Next.js, Wagmi, and Shape Network. Get quickly started onchain with sensible defaults for a great user & developer experience.',
+    'Alfred - A modern NFT dashboard for viewing and managing your digital assets on Shape Network. Connect your wallet to explore your NFT collections.',
   keywords: [
     'web3',
     'blockchain',
@@ -31,32 +31,32 @@ export const metadata: Metadata = {
     'shape network',
     'ethereum',
     'wagmi',
-    'builder',
+    'nft',
     'rainbowkit',
     'nextjs',
     'typescript',
     'tailwind',
-    'starter kit',
-    'template',
+    'dashboard',
+    'collection',
     'smart contracts',
     'wallet connect',
   ],
-  metadataBase: new URL('https://builder-kit.vercel.app'),
+  metadataBase: new URL('https://alfred.vercel.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://builder-kit.vercel.app',
-    title: 'Builder Kit - Shape Network',
+    url: 'https://alfred.vercel.app',
+    title: 'Alfred - Shape Network',
     description:
-      'A modern & minimal web3 starter kit for building decentralized applications with Next.js, Wagmi, and Shape Network. Get quickly started onchain with sensible defaults for a great user & developer experience.',
-    siteName: 'Builder Kit',
+      'Alfred - A modern NFT dashboard for viewing and managing your digital assets on Shape Network. Connect your wallet to explore your NFT collections.',
+    siteName: 'Alfred',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Builder Kit - Shape Network',
+    title: 'Alfred - Shape Network',
     description:
       'A modern & minimal web3 starter kit for building decentralized applications with Next.js, Wagmi, and Shape Network.',
     site: '@Shape_L2',
