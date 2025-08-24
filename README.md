@@ -9,7 +9,7 @@ Your distinguished personal NFT connoisseur and blockchain butler. Alfred is an 
   </tr>
 </table>
 
-See deployed website: [alfred.vercel.app](https://alfred.vercel.app/)
+See deployed website: [alfred-brown.vercel.app](https://alfred-brown.vercel.app/)
 
 ## ✨ Features
 
