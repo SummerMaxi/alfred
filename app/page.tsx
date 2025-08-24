@@ -69,10 +69,10 @@ export default function Home() {
           </h2>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[800px]">
           {/* Left Column - Contract Lists */}
-          <Card>
-            <CardHeader>
+          <Card className="flex flex-col h-full">
+            <CardHeader className="flex-shrink-0">
               <CardTitle className="text-lg flex items-center gap-2">
                 {isArtistMode ? (
                   <>
@@ -87,7 +87,7 @@ export default function Home() {
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1 flex flex-col">
               {isArtistMode ? (
                 <ContractList 
                   selectedContract={selectedDeployedContract}
@@ -103,8 +103,8 @@ export default function Home() {
           </Card>
 
           {/* Right Column - Leaderboards */}
-          <Card>
-            <CardHeader>
+          <Card className="flex flex-col h-full">
+            <CardHeader className="flex-shrink-0">
               <CardTitle className="text-lg flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {isArtistMode ? (
@@ -134,7 +134,7 @@ export default function Home() {
                 )}
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="flex-1 flex flex-col">
               {isArtistMode ? (
                 <AggregatedLeaderboard />
               ) : (
