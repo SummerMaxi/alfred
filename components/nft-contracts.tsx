@@ -3,7 +3,7 @@
 import { useNftContracts } from '@/hooks/use-nft-contracts';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ExternalLink, FileText, Calendar, Hash, Network } from 'lucide-react';
+import { ExternalLink, FileText, Hash, Network } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import Link from 'next/link';
 
@@ -138,17 +138,11 @@ export function NftContracts() {
                 </div>
               </div>
 
-              <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <Calendar className="h-3 w-3" />
-                  <span>Block #{contract.deployedBlockNumber.toLocaleString()}</span>
+              {contract.opensea?.floorPrice && (
+                <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                  <span>Floor: {contract.opensea.floorPrice} ETH</span>
                 </div>
-                {contract.opensea?.floorPrice && (
-                  <div className="flex items-center gap-1">
-                    <span>Floor: {contract.opensea.floorPrice} ETH</span>
-                  </div>
-                )}
-              </div>
+              )}
 
               {contract.opensea?.description && (
                 <p className="text-sm text-muted-foreground line-clamp-2 mt-2">

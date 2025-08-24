@@ -40,31 +40,55 @@ const SUPPORTED_CHAINS = [
   { name: 'Shape', endpoint: 'shape-mainnet.g.alchemy.com', chainId: 360, explorer: 'https://shapescan.xyz' },
 ];
 
-// Helper function to get actual NFT count for ERC1155 contracts
-async function getERC1155TotalCount(contractAddress: string, chainEndpoint: string, alchemyKey: string): Promise<number> {
+// Helper function to get total editions/supply for ERC1155 contracts
+async function getERC1155TotalSupply(contractAddress: string, chainEndpoint: string, alchemyKey: string): Promise<number> {
   try {
     const url = `https://${chainEndpoint}/nft/v3/${alchemyKey}/getNFTsForContract`;
-    const searchParams = new URLSearchParams({
-      contractAddress,
-      withMetadata: 'false',
-      limit: '100' // Start with limit to get total count
-    });
+    let totalSupply = 0;
+    let pageKey: string | undefined;
+    let hasMore = true;
 
-    const response = await fetch(`${url}?${searchParams}`, {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-      },
-    });
+    // Paginate through all NFTs to sum up their individual supplies
+    while (hasMore) {
+      const searchParams = new URLSearchParams({
+        contractAddress,
+        withMetadata: 'true',
+        limit: '100'
+      });
 
-    if (response.ok) {
-      const data = await response.json();
-      // Return the total count if available, otherwise count the returned NFTs
-      return data.totalCount || data.nfts?.length || 0;
+      if (pageKey) {
+        searchParams.append('pageKey', pageKey);
+      }
+
+      const response = await fetch(`${url}?${searchParams}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        
+        // For ERC1155, sum up the supply of each token ID
+        if (data.nfts) {
+          for (const nft of data.nfts) {
+            // ERC1155 NFTs have a supply field indicating how many editions of this token ID exist
+            const supply = parseInt(nft.supply || nft.balance || '1');
+            totalSupply += supply;
+          }
+        }
+
+        pageKey = data.pageKey;
+        hasMore = !!pageKey;
+      } else {
+        break;
+      }
     }
-    return 0;
+
+    return totalSupply;
   } catch (error) {
-    console.warn('Failed to get ERC1155 count:', error);
+    console.warn('Failed to get ERC1155 total supply:', error);
     return 0;
   }
 }
@@ -113,9 +137,9 @@ export function useNftContracts() {
               let actualTotalSupply = contract.totalSupply;
               
               if (contract.tokenType === 'ERC1155') {
-                // Get actual count of NFTs for ERC1155 contracts
-                const actualCount = await getERC1155TotalCount(contract.address, chain.endpoint, config.alchemyKey);
-                actualTotalSupply = actualCount > 0 ? actualCount.toString() : contract.totalSupply || '0';
+                // Get total supply across all token IDs for ERC1155 contracts
+                const actualSupply = await getERC1155TotalSupply(contract.address, chain.endpoint, config.alchemyKey);
+                actualTotalSupply = actualSupply > 0 ? actualSupply.toString() : contract.totalSupply || '0';
               }
               
               allContracts.push({
