@@ -8,6 +8,7 @@ import { DeployersLeaderboard } from '@/components/deployers-leaderboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
+import { useAccount } from 'wagmi';
 import { useMode } from '@/contexts/mode-context';
 import { useInterfaceMode } from '@/contexts/interface-mode-context';
 import { AutonomousInterface } from '@/components/autonomous-interface';
@@ -22,6 +23,7 @@ export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);
   const [selectedOwnedContract, setSelectedOwnedContract] = useState<Contract | null>(null);
   const [manualAddress, setManualAddress] = useState('');
+  const { isConnected } = useAccount();
   const { mode } = useMode();
   const { interfaceMode } = useInterfaceMode();
   const { data: ownersData } = useAllNftOwners();
@@ -55,6 +57,34 @@ export default function Home() {
         <InterfaceModeToggle />
       </div>
 
+      {/* Manual Address Input - Only visible when wallet not connected */}
+      {!isConnected && (
+        <div className="flex justify-center py-4 border-b bg-muted/20">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-muted-foreground">No wallet connected?</span>
+            <Input 
+              placeholder="Enter wallet address (0x...)"
+              value={manualAddress}
+              onChange={(e) => setManualAddress(e.target.value)}
+              className="w-80"
+            />
+            <Button 
+              variant="default"
+              size="sm"
+              onClick={() => {
+                if (manualAddress.trim()) {
+                  // TODO: Implement manual address analysis
+                  alert(`Analyzing address: ${manualAddress.trim()}`);
+                }
+              }}
+              disabled={!manualAddress.trim()}
+            >
+              Analyze Address
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Show Alfred interface if that mode is selected */}
       {interfaceMode === 'alfred' ? (
         <div className="flex-1">
@@ -66,7 +96,7 @@ export default function Home() {
           <div className="flex flex-col items-center mb-6 space-y-4">
             <ModeToggleWrapper />
             
-            {/* Export and Manual Address Options */}
+            {/* Export Options */}
             <div className="flex flex-wrap gap-3 items-center">
               <Button 
                 onClick={handleExportCollectors}
@@ -86,28 +116,6 @@ export default function Home() {
                 <Download className="h-4 w-4 mr-2" />
                 Export Contracts CSV
               </Button>
-              
-              {/* Manual Address Input */}
-              <div className="flex items-center gap-2">
-                <Input 
-                  placeholder="Enter wallet address (0x...)"
-                  value={manualAddress}
-                  onChange={(e) => setManualAddress(e.target.value)}
-                  className="w-64"
-                />
-                <Button 
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    if (manualAddress.trim()) {
-                      window.location.href = `/?address=${manualAddress.trim()}`;
-                    }
-                  }}
-                  disabled={!manualAddress.trim()}
-                >
-                  Analyze Address
-                </Button>
-              </div>
             </div>
           </div>
 
