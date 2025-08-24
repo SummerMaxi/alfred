@@ -140,6 +140,15 @@ export default function Home() {
                 Export Collectors CSV
               </Button>
               <Button 
+                onClick={handleExportDetailedCollectors}
+                variant="outline" 
+                size="sm"
+                disabled={!ownersData?.owners?.length}
+              >
+                <Download className="h-4 w-4 mr-2" />
+                Export Detailed CSV
+              </Button>
+              <Button 
                 onClick={handleExportContracts}
                 variant="outline" 
                 size="sm"

@@ -3,7 +3,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { useEffectiveAddress } from '@/hooks/use-effective-address';
@@ -12,7 +11,7 @@ import { useNftContracts } from '@/hooks/use-nft-contracts';
 import { useOwnedNftContracts } from '@/hooks/use-owned-nft-contracts';
 import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
-import { Send, Bot } from 'lucide-react';
+import { Send } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface Message {

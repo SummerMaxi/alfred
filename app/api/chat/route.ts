@@ -75,16 +75,17 @@ As a personal NFT connoisseur, provide insightful commentary on collecting patte
       : 'I apologize, but I encountered an issue processing your request.';
 
     return NextResponse.json({ reply });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Chat API error:', error);
+    const errorDetails = error as Error & { status?: number };
     console.error('Error details:', {
-      status: error.status,
-      message: error.message,
-      stack: error.stack
+      status: errorDetails.status,
+      message: errorDetails.message,
+      stack: errorDetails.stack
     });
     
     // Handle rate limiting specifically
-    if (error.status === 429) {
+    if (errorDetails.status === 429) {
       return NextResponse.json(
         { error: 'I apologize, Master, but I am currently experiencing high demand. The API rate limit has been reached. Please try again in a moment or configure your own Anthropic API key.' },
         { status: 429 }

@@ -1,8 +1,6 @@
 import { Providers } from '@/components/providers';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { WalletConnect } from '@/components/wallet-connect';
-import { ModeToggleWrapper } from '@/components/mode-toggle-wrapper';
-import { InterfaceModeToggle } from '@/components/interface-mode-toggle';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Link from 'next/link';
