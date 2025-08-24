@@ -2,12 +2,7 @@
 
 Your distinguished personal NFT marketplace and analytics platform. Powered by Alfred, your AI NFT connoisseur and blockchain butler, MintShare.fun provides detailed insights for both collectors and artists across multiple blockchain networks.
 
-<table width="100%">
-  <tr>
-    <td width="50%"><img src="./public/lp-1.png" alt="MintShare.fun Screenshot 1" width="100%"/></td>
-    <td width="50%"><img src="./public/lp-2.png" alt="MintShare.fun Screenshot 2" width="100%"/></td>
-  </tr>
-</table>
+🎬 **Watch Demo**: [MintShare.fun Screen Recording](https://www.youtube.com/watch?v=0tvpxF7sjMQ)
 
 See deployed website: [mintshare.fun](https://mintshare.fun)
 
@@ -107,15 +102,6 @@ See deployed website: [mintshare.fun](https://mintshare.fun)
 - **Status**: This is an API limitation, not a bug in Alfred
 - **Workaround**: Ethereum and Base networks work perfectly for deployed contract tracking
 
-### Supported Features by Chain
-
-| Feature | Ethereum | Base | Shape |
-|---------|----------|------|-------|
-| Deployed Contracts | ✅ Full Support | ✅ Full Support | ❌ API Limitation |
-| Owned NFTs | ✅ Full Support | ✅ Full Support | ✅ Full Support |
-| Collector Analytics | ✅ Full Support | ✅ Full Support | ✅ Full Support |
-| Leaderboards | ✅ Full Support | ✅ Full Support | ✅ Full Support |
-
 ## 🎯 How Alfred Works
 
 ### 1. Connect Your Wallet or Enter Manual Address
@@ -202,6 +188,12 @@ MintShare.fun is continuously evolving to become the ultimate NFT ecosystem plat
 - **Collector-Artist Matching**: Connect collectors with artists based on preference patterns
 - **Market Opportunity Identification**: Spot undervalued artists before they break out
 
+### 📈 Trending Analytics Platform
+- **Trending Collectors**: Track and showcase collectors who are actively acquiring specific NFT types
+- **Trending Artists**: Identify artists gaining momentum across different NFT categories
+- **NFT Type Trends**: Analyze trends for various NFT types (Art, PFPs, Gaming, Music, Photography, etc.)
+- **Real-time Trend Detection**: Monitor emerging trends across all supported blockchain networks
+
 ### 📈 Advanced Analytics & Insights
 - **Market Trend Prediction**: Anticipate NFT market movements using historical data
 - **Portfolio Optimization**: Suggest collection improvements for both artists and collectors
@@ -213,6 +205,13 @@ MintShare.fun is continuously evolving to become the ultimate NFT ecosystem plat
 - **Cross-Chain Bridging**: Seamless NFT transfers between supported networks
 
 Stay tuned as MintShare.fun transforms from analytics platform to complete NFT ecosystem orchestrator!
+
+## 👥 Team
+
+### SummerMaxi - Founder & Lead Developer
+- **Discord**: `summermaxi`
+- **Twitter**: [@summermaxis](https://twitter.com/summermaxis)
+- Visionary behind MintShare.fun and Alfred AI integration
 
 ## 🤝 Contributing
 
