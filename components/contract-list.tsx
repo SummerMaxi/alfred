@@ -6,7 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { FileText, Hash, Network, ChevronLeft, ChevronRight } from 'lucide-react';
-import { useAccount } from 'wagmi';
+import { useEffectiveAddress } from '@/hooks/use-effective-address';
 import { cn } from '@/lib/utils';
 import { Contract } from '@/types/contract';
 
@@ -19,7 +19,7 @@ const ITEMS_PER_PAGE = 6;
 
 export function ContractList({ selectedContract, onContractSelect }: ContractListProps) {
   const [currentPage, setCurrentPage] = useState(1);
-  const { isConnected } = useAccount();
+  const { isConnected } = useEffectiveAddress();
   const { data, isLoading, error } = useNftContracts();
 
   if (!isConnected) {

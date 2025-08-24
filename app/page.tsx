@@ -40,13 +40,15 @@ export default function Home() {
   const { isHydrated: interfaceModeHydrated } = useInterfaceMode();
   const { data: ownersData } = useAllNftOwners();
   const { data: deployersData } = useDeployersLeaderboard();
+  const { data: deployedContracts } = useNftContracts();
+  const { data: ownedContracts } = useOwnedNftContracts();
 
+  const isArtistMode = mode === 'artist';
+  
   // Don't render until contexts are hydrated to prevent hydration mismatch
   if (!manualAddressHydrated || !interfaceModeHydrated) {
     return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">Loading...</div>;
   }
-
-  const isArtistMode = mode === 'artist';
 
   const handleExportCollectors = () => {
     if (ownersData?.owners) {
@@ -59,9 +61,6 @@ export default function Home() {
       exportDetailedCollectorsToCSV(ownersData.owners, 'detailed-collectors.csv');
     }
   };
-
-  const { data: deployedContracts } = useNftContracts();
-  const { data: ownedContracts } = useOwnedNftContracts();
 
   const handleExportContracts = () => {
     const contracts = isArtistMode ? deployedContracts?.contracts : ownedContracts?.contracts;
