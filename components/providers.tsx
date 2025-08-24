@@ -11,30 +11,33 @@ import { WagmiProvider } from 'wagmi';
 import { Toaster } from 'sonner';
 import { ModeProvider } from '@/contexts/mode-context';
 import { InterfaceModeProvider } from '@/contexts/interface-mode-context';
+import { ManualAddressProvider } from '@/contexts/manual-address-context';
 
 const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <InterfaceModeProvider>
-      <ModeProvider>
-      <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-        <WagmiProvider config={wagmiConfig}>
-          <QueryClientProvider client={queryClient}>
-            <RainbowKitProvider
-              theme={{
-                lightMode: lightTheme(),
-                darkMode: darkTheme(),
-              }}
-              initialChain={config.chainId === shape.id ? shape : shapeSepolia}
-            >
-              {children}
-              <Toaster />
-            </RainbowKitProvider>
-          </QueryClientProvider>
-        </WagmiProvider>
-      </ThemeProvider>
-      </ModeProvider>
-    </InterfaceModeProvider>
+    <ManualAddressProvider>
+      <InterfaceModeProvider>
+        <ModeProvider>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
+          <WagmiProvider config={wagmiConfig}>
+            <QueryClientProvider client={queryClient}>
+              <RainbowKitProvider
+                theme={{
+                  lightMode: lightTheme(),
+                  darkMode: darkTheme(),
+                }}
+                initialChain={config.chainId === shape.id ? shape : shapeSepolia}
+              >
+                {children}
+                <Toaster />
+              </RainbowKitProvider>
+            </QueryClientProvider>
+          </WagmiProvider>
+        </ThemeProvider>
+        </ModeProvider>
+      </InterfaceModeProvider>
+    </ManualAddressProvider>
   );
 };

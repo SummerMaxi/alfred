@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
-import { useAccount } from 'wagmi';
+import { useEffectiveAddress } from '@/hooks/use-effective-address';
 import { useENSName } from '@/hooks/use-ens-name';
 import { useNftContracts } from '@/hooks/use-nft-contracts';
 import { useOwnedNftContracts } from '@/hooks/use-owned-nft-contracts';
@@ -28,7 +28,7 @@ export function AutonomousInterface() {
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
-  const { address } = useAccount();
+  const { address } = useEffectiveAddress();
   const { ensName } = useENSName(address || '');
   const { data: deployedContracts } = useNftContracts();
   const { data: ownedContracts } = useOwnedNftContracts();
@@ -134,7 +134,7 @@ export function AutonomousInterface() {
   };
 
   return (
-    <div className="flex items-center justify-center p-6 min-h-[calc(100vh-8rem)]">
+    <div className="flex items-center justify-center p-6 h-full">
       <div className="w-full max-w-4xl h-[600px] border rounded-lg shadow-lg bg-background flex flex-col">
         <div className="flex-1 overflow-y-auto">
           <div className="p-4 space-y-6">

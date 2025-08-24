@@ -2,7 +2,7 @@
 
 import { config } from '@/lib/config';
 import { useQuery } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
+import { useEffectiveAddress } from './use-effective-address';
 import { Contract } from '@/types/contract';
 
 interface AlchemyResponse {
@@ -71,7 +71,7 @@ async function getERC1155TotalSupply(contractAddress: string, chainEndpoint: str
 }
 
 export function useNftContracts() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useEffectiveAddress();
 
   return useQuery({
     queryKey: ['nft-contracts', address],

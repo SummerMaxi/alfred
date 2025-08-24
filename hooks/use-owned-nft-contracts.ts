@@ -2,7 +2,7 @@
 
 import { config } from '@/lib/config';
 import { useQuery } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
+import { useEffectiveAddress } from './use-effective-address';
 import { Contract } from '@/types/contract';
 
 interface OwnedContractsResponse {
@@ -18,7 +18,7 @@ const SUPPORTED_CHAINS = [
 ];
 
 export function useOwnedNftContracts() {
-  const { address, isConnected } = useAccount();
+  const { address, isConnected } = useEffectiveAddress();
 
   return useQuery({
     queryKey: ['owned-nft-contracts', address],

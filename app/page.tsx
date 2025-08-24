@@ -6,11 +6,16 @@ import { AggregatedLeaderboard } from '@/components/aggregated-leaderboard';
 import { OwnedContractsList } from '@/components/owned-contracts-list';
 import { DeployersLeaderboard } from '@/components/deployers-leaderboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
-import { useAccount } from 'wagmi';
+import { useNftContracts } from '@/hooks/use-nft-contracts';
+import { useOwnedNftContracts } from '@/hooks/use-owned-nft-contracts';
+import { useEffectiveAddress } from '@/hooks/use-effective-address';
 import { useMode } from '@/contexts/mode-context';
 import { useInterfaceMode } from '@/contexts/interface-mode-context';
+import { useManualAddress } from '@/contexts/manual-address-context';
 import { AutonomousInterface } from '@/components/autonomous-interface';
 import { InterfaceModeToggle } from '@/components/interface-mode-toggle';
 import { ModeToggleWrapper } from '@/components/mode-toggle-wrapper';
@@ -22,10 +27,15 @@ import { Download } from 'lucide-react';
 export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);
   const [selectedOwnedContract, setSelectedOwnedContract] = useState<Contract | null>(null);
-  const [manualAddress, setManualAddress] = useState('');
-  const { isConnected } = useAccount();
+  const { isConnected } = useEffectiveAddress();
   const { mode } = useMode();
   const { interfaceMode } = useInterfaceMode();
+  const { 
+    manualAddress, 
+    setManualAddress, 
+    isUsingManualAddress, 
+    setIsUsingManualAddress 
+  } = useManualAddress();
   const { data: ownersData } = useAllNftOwners();
   const { data: deployersData } = useDeployersLeaderboard();
 
@@ -43,6 +53,9 @@ export default function Home() {
     }
   };
 
+  const { data: deployedContracts } = useNftContracts();
+  const { data: ownedContracts } = useOwnedNftContracts();
+
   const handleExportContracts = () => {
     const contracts = isArtistMode ? deployedContracts?.contracts : ownedContracts?.contracts;
     if (contracts) {
@@ -57,33 +70,34 @@ export default function Home() {
         <InterfaceModeToggle />
       </div>
 
-      {/* Manual Address Input - Only visible when wallet not connected */}
-      {!isConnected && (
-        <div className="flex justify-center py-4 border-b bg-muted/20">
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-muted-foreground">No wallet connected?</span>
-            <Input 
-              placeholder="Enter wallet address (0x...)"
-              value={manualAddress}
-              onChange={(e) => setManualAddress(e.target.value)}
-              className="w-80"
-            />
-            <Button 
-              variant="default"
-              size="sm"
-              onClick={() => {
-                if (manualAddress.trim()) {
-                  // TODO: Implement manual address analysis
-                  alert(`Analyzing address: ${manualAddress.trim()}`);
-                }
-              }}
-              disabled={!manualAddress.trim()}
-            >
-              Analyze Address
-            </Button>
-          </div>
+      {/* Manual Address Input - Always visible for manual address analysis */}
+      <div className="flex justify-center py-4 border-b bg-muted/20">
+        <div className="flex items-center gap-3">
+          <span className="text-sm text-muted-foreground">
+            {isConnected ? "Analyze any address:" : "No wallet connected?"}
+          </span>
+          <Input 
+            placeholder="Enter wallet address (0x...)"
+            value={manualAddress}
+            onChange={(e) => setManualAddress(e.target.value)}
+            className="w-80"
+          />
+          <Button 
+            variant="default"
+            size="sm"
+            onClick={() => {
+              if (manualAddress.trim()) {
+                setIsUsingManualAddress(true);
+                // Force re-fetch data with the new address
+                window.location.reload();
+              }
+            }}
+            disabled={!manualAddress.trim()}
+          >
+            {isUsingManualAddress && manualAddress ? 'Switch Address' : 'Analyze Address'}
+          </Button>
         </div>
-      )}
+      </div>
 
       {/* Show Alfred interface if that mode is selected */}
       {interfaceMode === 'alfred' ? (
