@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { Palette, User } from 'lucide-react';
 
 interface ModeToggleProps {
@@ -10,25 +10,36 @@ interface ModeToggleProps {
 
 export function ModeToggle({ mode, onModeChange }: ModeToggleProps) {
   return (
-    <div className="flex items-center gap-2">
-      <Button
-        variant={mode === 'artist' ? 'default' : 'ghost'}
-        size="sm"
+    <div className="relative flex items-center bg-muted rounded-full p-1 w-20 h-9">
+      {/* Sliding background */}
+      <div
+        className={cn(
+          "absolute top-1 bottom-1 w-8 bg-primary rounded-full transition-transform duration-200 ease-in-out",
+          mode === 'artist' ? 'translate-x-0' : 'translate-x-10'
+        )}
+      />
+      
+      {/* Artist Button */}
+      <button
         onClick={() => onModeChange('artist')}
-        className="flex items-center gap-2"
+        className={cn(
+          "relative z-10 flex items-center justify-center w-8 h-7 rounded-full transition-colors duration-200",
+          mode === 'artist' ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+        )}
       >
         <Palette className="h-4 w-4" />
-        Artist
-      </Button>
-      <Button
-        variant={mode === 'collector' ? 'default' : 'ghost'}
-        size="sm"
+      </button>
+      
+      {/* Collector Button */}
+      <button
         onClick={() => onModeChange('collector')}
-        className="flex items-center gap-2"
+        className={cn(
+          "relative z-10 flex items-center justify-center w-8 h-7 rounded-full transition-colors duration-200",
+          mode === 'collector' ? 'text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
+        )}
       >
         <User className="h-4 w-4" />
-        Collector
-      </Button>
+      </button>
     </div>
   );
 }

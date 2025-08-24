@@ -1,9 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import { useOwnedNftContracts } from '@/hooks/use-owned-nft-contracts';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { FileText, Hash, Network, ExternalLink } from 'lucide-react';
+import { FileText, Hash, Network, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
@@ -38,7 +40,10 @@ interface OwnedContractsListProps {
   onContractSelect: (contract: OwnedContract) => void;
 }
 
+const ITEMS_PER_PAGE = 6;
+
 export function OwnedContractsList({ selectedContract, onContractSelect }: OwnedContractsListProps) {
+  const [currentPage, setCurrentPage] = useState(1);
   const { isConnected } = useAccount();
   const { data, isLoading, error } = useOwnedNftContracts();
 
@@ -97,68 +102,106 @@ export function OwnedContractsList({ selectedContract, onContractSelect }: Owned
     );
   }
 
+  // Pagination logic
+  const totalPages = Math.ceil(data.contracts.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentContracts = data.contracts.slice(startIndex, endIndex);
+
   return (
     <div className="space-y-3">
-      {data.contracts.map((contract) => (
-        <div
-          key={contract.address}
-          onClick={() => onContractSelect(contract)}
-          className={cn(
-            "border rounded-lg p-4 cursor-pointer transition-colors",
-            selectedContract?.address === contract.address
-              ? "bg-primary/10 border-primary"
-              : "hover:bg-muted/50"
-          )}
-        >
-          <div className="space-y-3">
-            <div className="space-y-1">
-              <h3 className="font-semibold text-base leading-tight">
-                {contract.opensea?.collectionName || contract.name || 'Unnamed Collection'}
-              </h3>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Hash className="h-3 w-3" />
-                <code className="font-mono">
-                  {contract.address.slice(0, 6)}...{contract.address.slice(-4)}
-                </code>
-                <Link
-                  href={`${contract.explorer}/address/${contract.address}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-foreground"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <ExternalLink className="h-3 w-3" />
-                </Link>
+      <div className="space-y-3">
+        {currentContracts.map((contract) => (
+          <div
+            key={contract.address}
+            onClick={() => onContractSelect(contract)}
+            className={cn(
+              "border rounded-lg p-4 cursor-pointer transition-colors",
+              selectedContract?.address === contract.address
+                ? "bg-primary/10 border-primary"
+                : "hover:bg-muted/50"
+            )}
+          >
+            <div className="space-y-3">
+              <div className="space-y-1">
+                <h3 className="font-semibold text-base leading-tight">
+                  {contract.opensea?.collectionName || contract.name || 'Unnamed Collection'}
+                </h3>
+                <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                  <Hash className="h-3 w-3" />
+                  <code className="font-mono">
+                    {contract.address.slice(0, 6)}...{contract.address.slice(-4)}
+                  </code>
+                  <Link
+                    href={`${contract.explorer}/address/${contract.address}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-foreground"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                  </Link>
+                </div>
+                <div className="text-xs text-muted-foreground">
+                  Deployed by: {contract.contractDeployer.slice(0, 6)}...{contract.contractDeployer.slice(-4)}
+                </div>
               </div>
-              <div className="text-xs text-muted-foreground">
-                Deployed by: {contract.contractDeployer.slice(0, 6)}...{contract.contractDeployer.slice(-4)}
-              </div>
-            </div>
-            
-            <div className="flex items-center gap-2">
-              <Badge variant="secondary" className="text-xs">
-                {contract.tokenType}
-              </Badge>
-              {contract.symbol && (
-                <Badge variant="outline" className="text-xs font-mono">
-                  {contract.symbol}
+              
+              <div className="flex items-center gap-2">
+                <Badge variant="secondary" className="text-xs">
+                  {contract.tokenType}
                 </Badge>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <FileText className="h-3 w-3" />
-                <span>{parseInt(contract.totalSupply || '0').toLocaleString()} total supply</span>
+                {contract.symbol && (
+                  <Badge variant="outline" className="text-xs font-mono">
+                    {contract.symbol}
+                  </Badge>
+                )}
               </div>
-              <div className="flex items-center gap-1 text-xs text-muted-foreground">
-                <Network className="h-3 w-3" />
-                <span>{contract.chain}</span>
+
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-1 text-muted-foreground">
+                  <FileText className="h-3 w-3" />
+                  <span>{parseInt(contract.totalSupply || '0').toLocaleString()} total supply</span>
+                </div>
+                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                  <Network className="h-3 w-3" />
+                  <span>{contract.chain}</span>
+                </div>
               </div>
             </div>
           </div>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-2 border-t">
+          <div className="text-sm text-muted-foreground">
+            {startIndex + 1}-{Math.min(endIndex, data.contracts.length)} of {data.contracts.length}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-medium px-2">
+              {currentPage} / {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
-      ))}
+      )}
     </div>
   );
 }
