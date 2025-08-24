@@ -80,7 +80,7 @@ export function useNftContracts() {
         throw new Error('No address or Alchemy key available');
       }
 
-      const allContracts: NftContract[] = [];
+      const allContracts: Contract[] = [];
 
       // Query each supported chain
       for (const chain of SUPPORTED_CHAINS) {
