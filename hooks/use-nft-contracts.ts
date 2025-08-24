@@ -40,6 +40,35 @@ const SUPPORTED_CHAINS = [
   { name: 'Shape', endpoint: 'shape-mainnet.g.alchemy.com', chainId: 360, explorer: 'https://shapescan.xyz' },
 ];
 
+// Helper function to get actual NFT count for ERC1155 contracts
+async function getERC1155TotalCount(contractAddress: string, chainEndpoint: string, alchemyKey: string): Promise<number> {
+  try {
+    const url = `https://${chainEndpoint}/nft/v3/${alchemyKey}/getNFTsForContract`;
+    const searchParams = new URLSearchParams({
+      contractAddress,
+      withMetadata: 'false',
+      limit: '100' // Start with limit to get total count
+    });
+
+    const response = await fetch(`${url}?${searchParams}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      // Return the total count if available, otherwise count the returned NFTs
+      return data.totalCount || data.nfts?.length || 0;
+    }
+    return 0;
+  } catch (error) {
+    console.warn('Failed to get ERC1155 count:', error);
+    return 0;
+  }
+}
+
 export function useNftContracts() {
   const { address, isConnected } = useAccount();
 
@@ -74,23 +103,29 @@ export function useNftContracts() {
             const data = await response.json();
             
             // Filter contracts to only show those deployed by the connected address
-            const deployedContracts = data.contracts
-              .filter((contract: any) => 
-                contract.contractDeployer && 
-                contract.contractDeployer.toLowerCase() === address.toLowerCase()
-              )
-              .map((contract: any) => ({
+            const deployedContracts = data.contracts.filter((contract: any) => 
+              contract.contractDeployer && 
+              contract.contractDeployer.toLowerCase() === address.toLowerCase()
+            );
+
+            // For each deployed contract, get the actual NFT count if it's ERC1155
+            for (const contract of deployedContracts) {
+              let actualTotalSupply = contract.totalSupply;
+              
+              if (contract.tokenType === 'ERC1155') {
+                // Get actual count of NFTs for ERC1155 contracts
+                const actualCount = await getERC1155TotalCount(contract.address, chain.endpoint, config.alchemyKey);
+                actualTotalSupply = actualCount > 0 ? actualCount.toString() : contract.totalSupply || '0';
+              }
+              
+              allContracts.push({
                 ...contract,
                 chain: chain.name,
                 chainId: chain.chainId,
                 explorer: chain.explorer,
-                // Handle ERC1155 total supply - for ERC1155, totalSupply might be undefined or 0
-                totalSupply: contract.tokenType === 'ERC1155' 
-                  ? (contract.totalSupply || 'Multiple') 
-                  : contract.totalSupply
-              }));
-
-            allContracts.push(...deployedContracts);
+                totalSupply: actualTotalSupply
+              });
+            }
           }
         } catch (error) {
           console.warn(`Failed to fetch contracts from ${chain.name}:`, error);

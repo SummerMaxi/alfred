@@ -127,10 +127,7 @@ export function NftContracts() {
                     <div className="flex items-center gap-1 text-sm font-medium">
                       <FileText className="h-3 w-3" />
                       <span>
-                        {contract.totalSupply === 'Multiple' || contract.tokenType === 'ERC1155' 
-                          ? 'Multiple' 
-                          : parseInt(contract.totalSupply || '0').toLocaleString()
-                        } NFTs
+                        {parseInt(contract.totalSupply || '0').toLocaleString()} NFTs
                       </span>
                     </div>
                     <div className="flex items-center gap-1 text-xs text-muted-foreground">
