@@ -1,132 +1,179 @@
-# Builder Kit: Onchain Starter Template
+# Alfred NFT Assistant
 
-A modern, production-ready starter template for building decentralized applications with sensible defaults.
+Your distinguished personal NFT connoisseur and blockchain butler. Alfred is an AI-powered NFT marketplace and analytics platform that provides detailed insights for both collectors and artists across multiple blockchain networks.
 
 <table width="100%">
   <tr>
-    <td width="50%"><img src="./public/lp-1.png" alt="Builder Kit Screenshot 1" width="100%"/></td>
-    <td width="50%"><img src="./public/lp-2.png" alt="Builder Kit Screenshot 2" width="100%"/></td>
+    <td width="50%"><img src="./public/lp-1.png" alt="Alfred NFT Assistant Screenshot 1" width="100%"/></td>
+    <td width="50%"><img src="./public/lp-2.png" alt="Alfred NFT Assistant Screenshot 2" width="100%"/></td>
   </tr>
 </table>
 
-See deployed website: [builder-kit.vercel.app](https://builder-kit.vercel.app/)
+See deployed website: [alfred.vercel.app](https://alfred.vercel.app/)
 
 ## ✨ Features
 
-- **Next.js 15** with App Router and React 19
-- **Web3 Integration** with Wagmi v2 and RainbowKit
-- **React Query** for data fetching
-- **Shape Network** support (Mainnet & Sepolia)
-- **Alchemy SDK** for performant blockchain interactions
-- **TypeScript** for type safety
-- **Tailwind CSS** with theming and dark mode support
-- **Shadcn/ui** for a large range of fully customizable and themable components
-- **Error Boundaries** for graceful error handling
+### 🤖 Alfred AI Chat Assistant
+- **Personal NFT Connoisseur**: Powered by Claude AI with Alfred Pennyworth persona
+- **Intelligent Analytics**: Get insights about your NFT collections, market trends, and collector patterns
+- **Natural Language Queries**: Ask questions like "Show me my top 10 collectors" or "Analyze my deployment history"
+- **Contextual Responses**: Alfred knows your complete NFT ecosystem and provides personalized insights
+
+### 🎨 Dual Interface Modes
+- **Alfred Mode**: AI-powered chat interface for intelligent NFT analysis
+- **Manual Mode**: Traditional dashboard with detailed tables and export options
+
+### 🌐 Multi-Chain Support
+- **Ethereum**: Full NFT contract deployment and ownership data
+- **Base**: Complete NFT analytics and leaderboards
+- **Shape Network**: NFT ownership tracking (deployment data limited by API)
+
+### 📊 Comprehensive NFT Analytics
+- **Artist Dashboard**: View contracts you've deployed across all supported chains
+- **Collector Dashboard**: See NFT contracts where you own tokens
+- **Leaderboards**: Top collectors and contract deployers
+- **Export Options**: Download data as CSV (collectors, detailed collectors, contracts)
+
+### 🔗 Advanced Features
+- **Manual Address Analysis**: Analyze any wallet address without connecting
+- **ENS Name Resolution**: Personalized experience with ENS names
+- **Real-time Data**: Live NFT data from Alchemy API
+- **Responsive Design**: Works seamlessly on desktop and mobile
 
 ## 🚀 Quick Start
 
-1. **Clone or use as template**
+1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/shape-network/builder-kit.git
-   cd builder-kit
+   git clone https://github.com/SummerMaxi/alfred.git
+   cd alfred
    ```
 
 2. **Install dependencies**
 
    ```bash
+   npm install
+   # or
    yarn install
    ```
 
 3. **Set up environment variables**
 
+   Create a `.env.local` file with the following variables:
+
    ```bash
-   cp .env-example .env
+   # Required: Alchemy API Key for NFT data
+   NEXT_PUBLIC_ALCHEMY_KEY=your_alchemy_api_key
+
+   # Required: WalletConnect Project ID
+   NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=your_walletconnect_project_id
+
+   # Required: Claude AI API Key for Alfred chat
+   ANTHROPIC_API_KEY=your_anthropic_api_key
+
+   # Optional: Chain ID (360 for Shape Mainnet, 11011 for Shape Testnet)
+   NEXT_PUBLIC_CHAIN_ID=360
    ```
-
-   Fill in your environment variables:
-
-   - `NEXT_PUBLIC_ALCHEMY_KEY`: Get from [Alchemy](https://alchemy.com)
-   - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: Get from [WalletConnect](https://cloud.walletconnect.com)
-   - `NEXT_PUBLIC_CHAIN_ID`: Use `11011` for Shape Sepolia or `360` for Shape Mainnet
 
 4. **Start development server**
 
    ```bash
+   npm run dev
+   # or
    yarn dev
    ```
 
 5. **Open your browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 🛠️ Development
+## 🛠️ Technical Stack
 
-### Available Scripts
+- **Next.js 15** with App Router and React 19
+- **TypeScript** for type safety
+- **Tailwind CSS** with dark mode support
+- **Shadcn/ui** for beautiful, accessible components
+- **Wagmi v2** and **RainbowKit** for Web3 integration
+- **React Query** for efficient data fetching
+- **Claude AI (Anthropic)** for intelligent NFT analysis
+- **Alchemy SDK** for blockchain data
 
-- `yarn dev` - Start development server with Turbopack
-- `yarn build` - Build for production
-- `yarn start` - Start production server
-- `yarn lint` - Run ESLint
-- `yarn lint:fix` - Fix ESLint issues
-- `yarn type-check` - Run TypeScript type checking
-- `yarn format` - Format code with Prettier
-- `yarn format:check` - Check code formatting
+## 📋 API Limitations & Known Issues
 
-### Project Structure
+### Shape Network Limitations
+⚠️ **Important Note**: Shape Network contracts may not appear in the Artist Dashboard due to Alchemy API limitations.
+
+- **Issue**: Alchemy's `getContractsForOwner` API returns `null` for the `contractDeployer` field on Shape Network
+- **Impact**: Cannot filter contracts deployed by specific addresses on Shape
+- **Status**: This is an API limitation, not a bug in Alfred
+- **Workaround**: Ethereum and Base networks work perfectly for deployed contract tracking
+
+### Supported Features by Chain
+
+| Feature | Ethereum | Base | Shape |
+|---------|----------|------|-------|
+| Deployed Contracts | ✅ Full Support | ✅ Full Support | ❌ API Limitation |
+| Owned NFTs | ✅ Full Support | ✅ Full Support | ✅ Full Support |
+| Collector Analytics | ✅ Full Support | ✅ Full Support | ✅ Full Support |
+| Leaderboards | ✅ Full Support | ✅ Full Support | ✅ Full Support |
+
+## 🎯 How Alfred Works
+
+### 1. Connect Your Wallet or Enter Manual Address
+- Connect using any wallet supported by RainbowKit
+- Or enter any wallet address manually for analysis
+
+### 2. Choose Your Mode
+- **Alfred Mode**: Chat with your AI NFT butler for insights and analysis
+- **Manual Mode**: Browse traditional dashboard with tables and export options
+
+### 3. Toggle Artist/Collector View
+- **Artist Mode**: Focus on contracts you've deployed
+- **Collector Mode**: Focus on NFTs you own and collect
+
+### 4. Get Insights
+- Ask Alfred questions about your NFT portfolio
+- Export detailed analytics as CSV files
+- View leaderboards and market insights
+
+## 🔧 Available Scripts
+
+- `npm run dev` - Start development server with Turbopack
+- `npm run build` - Build for production
+- `npm start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - Run TypeScript type checking
+
+## 🗂️ Project Structure
 
 ```
 ├── app/                    # Next.js App Router
-│   ├── api/               # API routes
-│   │   ├── get-nfts/     # Fetch NFTs for address
+│   ├── api/
+│   │   └── chat/          # Alfred AI chat endpoint
+│   ├── layout.tsx         # Root layout
+│   └── page.tsx          # Main dashboard
 ├── components/            # React components
 │   ├── ui/               # Shadcn/ui components
-│   ├── error-boundary.tsx
-│   ├── loading.tsx
-│   ├── providers.tsx
-│   ├── theme-toggle.tsx
-│   └── wallet-connect.tsx
+│   ├── autonomous-interface.tsx    # Alfred chat interface
+│   ├── contract-list.tsx          # Artist contracts display
+│   ├── owned-contracts-list.tsx   # Collector NFTs display
+│   ├── aggregated-leaderboard.tsx # Top collectors
+│   ├── deployers-leaderboard.tsx  # Top deployers
+│   └── ...               # Other components
 ├── hooks/                 # Custom React hooks
-│   ├── web3.ts           # Web3 data fetching hooks
-│   ├── use-balance.ts    # Wallet balance hook
-│   ├── use-mobile.ts     # Mobile detection hook
-├── lib/                   # Utility functions and configurations
-│   ├── clients.ts        # Alchemy and RPC clients
-│   ├── config.ts         # Environment configuration
-│   ├── utils.ts          # Helper functions
-│   └── web3.ts           # Wagmi configuration
-└── public/               # Static assets
+│   ├── use-nft-contracts.ts      # Deployed contracts data
+│   ├── use-owned-nft-contracts.ts # Owned NFTs data
+│   ├── use-all-nft-owners.ts     # Collector analytics
+│   ├── use-effective-address.ts  # Manual address support
+│   └── ...               # Other hooks
+├── contexts/             # React contexts
+│   ├── mode-context.tsx           # Artist/Collector toggle
+│   ├── interface-mode-context.tsx # Alfred/Manual toggle
+│   └── manual-address-context.tsx # Manual address handling
+├── lib/                  # Utilities
+│   ├── csv-export.ts     # CSV export functionality
+│   └── ...              # Other utilities
+└── types/               # TypeScript type definitions
 ```
-
-## 🎨 Customization
-
-### Theme Customization
-
-Edit `app/globals.css` to customize the color scheme:
-
-```css
-:root {
-  --background: 0 0% 100%;
-  --foreground: 222.2 84% 4.9%;
-  /* ... other CSS variables */
-}
-```
-
-### Adding Components
-
-Use Shadcn/ui CLI to add new components:
-
-```bash
-npx shadcn@latest add button
-```
-
-### Web3 Integration
-
-The template includes examples of Web3 integration:
-
-- Wallet connection with RainbowKit
-- Balance fetching with custom hooks
-- Chain switching and network detection
-- Error handling for Web3 operations
 
 ## 🌐 Deployment
 
@@ -134,28 +181,40 @@ The template includes examples of Web3 integration:
 
 1. Push your code to GitHub
 2. Connect your repository to [Vercel](https://vercel.com)
-3. Add your environment variables in Vercel dashboard
+3. Add your environment variables in Vercel dashboard:
+   - `NEXT_PUBLIC_ALCHEMY_KEY`
+   - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`
+   - `ANTHROPIC_API_KEY`
 4. Deploy!
-
-## 📚 Documentation
-
-- [Next.js Documentation](https://nextjs.org/docs)
-- [Wagmi Documentation](https://wagmi.sh)
-- [RainbowKit Documentation](https://www.rainbowkit.com)
-- [Shadcn/ui Documentation](https://ui.shadcn.com)
-- [Shape Network Documentation](https://docs.shape.network)
-- [Alchemy SDK Documentation](https://docs.alchemy.com/reference/alchemy-sdk-quickstart)
 
 ## 🤝 Contributing
 
-Contributions are welcome! Feel free to submit a Pull Request.
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📞 Support & Community
+
+- **Issues**: [GitHub Issues](https://github.com/SummerMaxi/alfred/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/SummerMaxi/alfred/discussions)
+- **Shape Discord**: [discord.com/invite/shape-l2](http://discord.com/invite/shape-l2)
 
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 💬 Support
+## 🙏 Acknowledgments
 
-- [Shape Discord](http://discord.com/invite/shape-l2)
-- [Twitter/X @Shape_L2](https://x.com/Shape_L2)
-- [Twitter/X @williamhzo](https://x.com/williamhzo)
+- **Shape Network** for blockchain infrastructure
+- **Alchemy** for NFT API services
+- **Anthropic** for Claude AI capabilities
+- **Vercel** for hosting and deployment
+- **Open source community** for amazing tools and libraries
+
+---
+
+*"Good day, Master. I am Alfred, your personal blockchain assistant. How may I assist with your NFT empire today?"* 🎩
