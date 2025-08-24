@@ -2,6 +2,7 @@ import { Providers } from '@/components/providers';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { WalletConnect } from '@/components/wallet-connect';
 import { ModeToggleWrapper } from '@/components/mode-toggle-wrapper';
+import { InterfaceModeToggle } from '@/components/interface-mode-toggle';
 import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Link from 'next/link';
@@ -96,6 +97,7 @@ export default function RootLayout({
                   <h1 className="text-2xl font-bold">Alfred</h1>
                 </Link>
                 <div className="flex items-center gap-3">
+                  <InterfaceModeToggle />
                   <ModeToggleWrapper />
                   <ThemeToggle />
                   <WalletConnect />
@@ -103,9 +105,9 @@ export default function RootLayout({
               </div>
             </header>
 
-            <main className="container mx-auto px-4 py-8">{children}</main>
+            <main className="container mx-auto px-4 py-8 pb-20">{children}</main>
 
-            <footer className="border-t mt-8">
+            <footer className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-50">
               <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4">
                 <Link
                   href="https://shape.network/"

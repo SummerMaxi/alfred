@@ -10,12 +10,14 @@ import { shape, shapeSepolia } from 'viem/chains';
 import { WagmiProvider } from 'wagmi';
 import { Toaster } from 'sonner';
 import { ModeProvider } from '@/contexts/mode-context';
+import { InterfaceModeProvider } from '@/contexts/interface-mode-context';
 
 const queryClient = new QueryClient();
 
 export const Providers = ({ children }: { children: ReactNode }) => {
   return (
-    <ModeProvider>
+    <InterfaceModeProvider>
+      <ModeProvider>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
         <WagmiProvider config={wagmiConfig}>
           <QueryClientProvider client={queryClient}>
@@ -32,6 +34,7 @@ export const Providers = ({ children }: { children: ReactNode }) => {
           </QueryClientProvider>
         </WagmiProvider>
       </ThemeProvider>
-    </ModeProvider>
+      </ModeProvider>
+    </InterfaceModeProvider>
   );
 };

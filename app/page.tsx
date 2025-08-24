@@ -9,24 +9,32 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
 import { useMode } from '@/contexts/mode-context';
-import { Trophy, Users, Hammer, Palette, User } from 'lucide-react';
+import { useInterfaceMode } from '@/contexts/interface-mode-context';
+import { AutonomousInterface } from '@/components/autonomous-interface';
+import { Trophy, Users, Hammer } from 'lucide-react';
 import { Contract } from '@/types/contract';
 
 export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);
   const [selectedOwnedContract, setSelectedOwnedContract] = useState<Contract | null>(null);
   const { mode } = useMode();
+  const { interfaceMode } = useInterfaceMode();
   const { data: ownersData } = useAllNftOwners();
   const { data: deployersData } = useDeployersLeaderboard();
 
   const isArtistMode = mode === 'artist';
+
+  // Show autonomous interface if that mode is selected
+  if (interfaceMode === 'autonomous') {
+    return <AutonomousInterface />;
+  }
 
   return (
     <div className="space-y-8">
 
       <div className="space-y-6">
         
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[600px]">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[500px]">
           {/* Left Column - Contract Lists */}
           <Card className="flex flex-col h-full">
             <CardHeader className="flex-shrink-0">
