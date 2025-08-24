@@ -104,13 +104,10 @@ export function useNftContracts() {
             const data = await response.json();
             
             // Filter contracts to only show those deployed by the connected address
-            // Note: Shape chain doesn't provide contractDeployer field, so we show all owned contracts for Shape
-            const deployedContracts = chain.name === 'Shape' 
-              ? data.contracts // Show all contracts for Shape since deployer info is not available
-              : data.contracts.filter((contract: any) => 
-                  contract.contractDeployer && 
-                  contract.contractDeployer.toLowerCase() === address.toLowerCase()
-                );
+            const deployedContracts = data.contracts.filter((contract: any) => 
+              contract.contractDeployer && 
+              contract.contractDeployer.toLowerCase() === address.toLowerCase()
+            );
 
             // For each deployed contract, get the actual NFT count if it's ERC1155
             for (const contract of deployedContracts) {

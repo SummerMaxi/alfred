@@ -73,9 +73,6 @@ export function ContractList({ selectedContract, onContractSelect }: ContractLis
         <p className="text-sm text-muted-foreground mt-2">
           You haven&apos;t deployed any NFT contracts yet
         </p>
-        <p className="text-xs text-muted-foreground mt-4 italic">
-          Note: For Shape network, all owned NFT contracts are shown as deployer info is not available
-        </p>
       </div>
     );
   }
@@ -85,19 +82,9 @@ export function ContractList({ selectedContract, onContractSelect }: ContractLis
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const currentContracts = data.contracts.slice(startIndex, endIndex);
-  
-  // Check if we have Shape contracts
-  const hasShapeContracts = data.contracts.some((c: any) => c.chain === 'Shape');
 
   return (
     <div className="flex flex-col h-full">
-      {hasShapeContracts && (
-        <div className="mb-2 p-2 bg-muted/50 rounded-md">
-          <p className="text-xs text-muted-foreground">
-            ℹ️ Shape contracts shown are all NFTs you own (deployer info unavailable)
-          </p>
-        </div>
-      )}
       <div className="flex-1 space-y-3 overflow-auto">
         {currentContracts.map((contract) => (
           <div
