@@ -34,10 +34,17 @@ export default function Home() {
     manualAddress, 
     setManualAddress, 
     isUsingManualAddress, 
-    setIsUsingManualAddress 
+    setIsUsingManualAddress,
+    isHydrated: manualAddressHydrated 
   } = useManualAddress();
+  const { isHydrated: interfaceModeHydrated } = useInterfaceMode();
   const { data: ownersData } = useAllNftOwners();
   const { data: deployersData } = useDeployersLeaderboard();
+
+  // Don't render until contexts are hydrated to prevent hydration mismatch
+  if (!manualAddressHydrated || !interfaceModeHydrated) {
+    return <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center">Loading...</div>;
+  }
 
   const isArtistMode = mode === 'artist';
 
@@ -88,14 +95,26 @@ export default function Home() {
             onClick={() => {
               if (manualAddress.trim()) {
                 setIsUsingManualAddress(true);
-                // Force re-fetch data with the new address
-                window.location.reload();
+                // Don't reload the page, just let React re-render with new address
+                // The hooks will automatically refetch with the new address
               }
             }}
             disabled={!manualAddress.trim()}
           >
             {isUsingManualAddress && manualAddress ? 'Switch Address' : 'Analyze Address'}
           </Button>
+          {isUsingManualAddress && isConnected && (
+            <Button 
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                setIsUsingManualAddress(false);
+                setManualAddress('');
+              }}
+            >
+              Back to My Wallet
+            </Button>
+          )}
         </div>
       </div>
 

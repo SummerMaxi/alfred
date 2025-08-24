@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface ManualAddressContextType {
   manualAddress: string;
@@ -8,6 +8,7 @@ interface ManualAddressContextType {
   isUsingManualAddress: boolean;
   setIsUsingManualAddress: (using: boolean) => void;
   getEffectiveAddress: (connectedAddress?: string) => string | undefined;
+  isHydrated: boolean;
 }
 
 const ManualAddressContext = createContext<ManualAddressContextType | undefined>(undefined);
@@ -15,6 +16,11 @@ const ManualAddressContext = createContext<ManualAddressContextType | undefined>
 export function ManualAddressProvider({ children }: { children: ReactNode }) {
   const [manualAddress, setManualAddress] = useState('');
   const [isUsingManualAddress, setIsUsingManualAddress] = useState(false);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
 
   const getEffectiveAddress = (connectedAddress?: string) => {
     if (isUsingManualAddress && manualAddress.trim()) {
@@ -30,7 +36,8 @@ export function ManualAddressProvider({ children }: { children: ReactNode }) {
         setManualAddress, 
         isUsingManualAddress, 
         setIsUsingManualAddress,
-        getEffectiveAddress 
+        getEffectiveAddress,
+        isHydrated
       }}
     >
       {children}
