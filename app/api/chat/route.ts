@@ -1,6 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 
+interface Contract {
+  name?: string;
+  symbol?: string;
+  contractAddress?: string;
+  totalSupply?: string | number;
+}
+
+interface Owner {
+  ownerAddress: string;
+  totalNfts: number;
+  contractsOwned?: Array<{ contractAddress: string; contractName: string; nftCount: number; chain: string }>;
+}
+
 const anthropic = new Anthropic({
   apiKey: process.env.ANTHROPIC_API_KEY,
 });
@@ -28,14 +41,14 @@ export async function POST(req: NextRequest) {
     }
 
     // Summarize the data to avoid token limits
-    const deployedContractsSummary = userData?.deployedContracts?.slice(0, 5)?.map(c => ({
+    const deployedContractsSummary = userData?.deployedContracts?.slice(0, 5)?.map((c: Contract) => ({
       name: c.name,
       symbol: c.symbol,
       address: c.contractAddress?.slice(0, 10) + '...',
       totalSupply: c.totalSupply
     })) || [];
 
-    const topOwners = userData?.allOwners?.slice(0, 15)?.map(owner => ({
+    const topOwners = userData?.allOwners?.slice(0, 15)?.map((owner: Owner) => ({
       address: owner.ownerAddress,
       totalNfts: owner.totalNfts,
       contracts: owner.contractsOwned?.length || 0
@@ -93,7 +106,7 @@ As a personal NFT connoisseur, provide insightful commentary on collecting patte
     }
     
     // Handle authentication errors
-    if (error.status === 401) {
+    if (errorDetails.status === 401) {
       return NextResponse.json(
         { error: 'I regret to inform you, Master, that the API key is not properly configured. Please add your Anthropic API key to the environment variables.' },
         { status: 401 }
@@ -101,7 +114,7 @@ As a personal NFT connoisseur, provide insightful commentary on collecting patte
     }
 
     // Handle invalid model errors
-    if (error.status === 400 && error.message?.includes('model')) {
+    if (errorDetails.status === 400 && errorDetails.message?.includes('model')) {
       return NextResponse.json(
         { error: 'I apologize, Master, but there appears to be an issue with the AI model configuration. Please check the API settings.' },
         { status: 400 }

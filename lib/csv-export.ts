@@ -38,7 +38,17 @@ export function exportCollectorsToCSV(collectors: NFTCollector[], filename: stri
   downloadCSV(csvRows.join('\n'), filename);
 }
 
-export function exportContractsToCSV(contracts: NFTContract[], filename: string = 'nft-contracts.csv') {
+export function exportContractsToCSV(contracts: Array<{
+  address: string;
+  name: string;
+  symbol: string;
+  chain: string;
+  totalSupply?: string | number;
+  opensea?: {
+    collectionName?: string;
+    description?: string;
+  };
+}>, filename: string = 'nft-contracts.csv') {
   const csvRows = [
     // Header
     'Contract Address,Name,Symbol,Chain,Total Supply,Collection Name,Description'
@@ -47,8 +57,11 @@ export function exportContractsToCSV(contracts: NFTContract[], filename: string 
   contracts.forEach((contract) => {
     const collectionName = contract.opensea?.collectionName || '';
     const description = contract.opensea?.description || '';
+    const totalSupply = typeof contract.totalSupply === 'number' 
+      ? contract.totalSupply 
+      : parseInt(contract.totalSupply || '0') || 0;
     
-    csvRows.push(`"${contract.address}","${contract.name}","${contract.symbol}","${contract.chain}",${contract.totalSupply || 0},"${collectionName}","${description.replace(/"/g, '""')}"`);
+    csvRows.push(`"${contract.address}","${contract.name}","${contract.symbol}","${contract.chain}",${totalSupply},"${collectionName}","${description.replace(/"/g, '""')}"`);
   });
 
   downloadCSV(csvRows.join('\n'), filename);
