@@ -42,18 +42,19 @@ export function useNftContracts() {
         throw new Error('No address or Alchemy key available');
       }
 
-      const url = `https://eth-mainnet.g.alchemy.com/nft/v3/${config.alchemyKey}/getContractsForOwner`;
+      const searchParams = new URLSearchParams({
+        owner: address,
+        withMetadata: 'true',
+        pageSize: '100',
+      });
+      
+      const url = `https://eth-mainnet.g.alchemy.com/nft/v3/${config.alchemyKey}/getContractsForOwner?${searchParams}`;
       
       const response = await fetch(url, {
-        method: 'POST',
+        method: 'GET',
         headers: {
-          'Content-Type': 'application/json',
+          'Accept': 'application/json',
         },
-        body: JSON.stringify({
-          owner: address,
-          withMetadata: true,
-          pageSize: 100,
-        }),
       });
 
       if (!response.ok) {
