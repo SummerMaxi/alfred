@@ -1,19 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Palette, User } from 'lucide-react';
 
-export function ModeToggle() {
-  const [mode, setMode] = useState<'artist' | 'collector'>('artist');
+interface ModeToggleProps {
+  mode: 'artist' | 'collector';
+  onModeChange: (mode: 'artist' | 'collector') => void;
+}
 
+export function ModeToggle({ mode, onModeChange }: ModeToggleProps) {
   return (
     <div className="flex items-center gap-2">
       <Button
         variant={mode === 'artist' ? 'default' : 'ghost'}
         size="sm"
-        onClick={() => setMode('artist')}
+        onClick={() => onModeChange('artist')}
         className="flex items-center gap-2"
       >
         <Palette className="h-4 w-4" />
@@ -22,7 +23,7 @@ export function ModeToggle() {
       <Button
         variant={mode === 'collector' ? 'default' : 'ghost'}
         size="sm"
-        onClick={() => setMode('collector')}
+        onClick={() => onModeChange('collector')}
         className="flex items-center gap-2"
       >
         <User className="h-4 w-4" />
@@ -30,10 +31,4 @@ export function ModeToggle() {
       </Button>
     </div>
   );
-}
-
-export function useModeToggle() {
-  const [mode, setMode] = useState<'artist' | 'collector'>('artist');
-  
-  return { mode, setMode };
 }
