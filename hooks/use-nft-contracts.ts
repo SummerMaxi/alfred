@@ -3,33 +3,10 @@
 import { config } from '@/lib/config';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
-
-interface NftContract {
-  address: string;
-  name: string;
-  symbol: string;
-  totalSupply: string;
-  tokenType: string;
-  contractDeployer: string;
-  deployedBlockNumber: number;
-  chain: string;
-  chainId: number;
-  opensea?: {
-    floorPrice: number;
-    collectionName: string;
-    safelistRequestStatus: string;
-    imageUrl: string;
-    description: string;
-    externalUrl: string;
-    twitterUsername: string;
-    discordUrl: string;
-    bannerImageUrl: string;
-    lastIngestedAt: string;
-  };
-}
+import { Contract } from '@/types/contract';
 
 interface AlchemyResponse {
-  contracts: NftContract[];
+  contracts: Contract[];
   totalCount: number;
   pageKey?: string;
 }

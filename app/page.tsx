@@ -10,31 +10,7 @@ import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
 import { useDeployersLeaderboard } from '@/hooks/use-deployers-leaderboard';
 import { useMode } from '@/contexts/mode-context';
 import { Trophy, Users, Hammer, Palette, User } from 'lucide-react';
-
-interface Contract {
-  address: string;
-  name: string;
-  symbol: string;
-  totalSupply: string;
-  tokenType: string;
-  contractDeployer: string;
-  deployedBlockNumber: number;
-  chain: string;
-  chainId: number;
-  explorer: string;
-  opensea?: {
-    floorPrice: number;
-    collectionName: string;
-    safelistRequestStatus: string;
-    imageUrl: string;
-    description: string;
-    externalUrl: string;
-    twitterUsername: string;
-    discordUrl: string;
-    bannerImageUrl: string;
-    lastIngestedAt: string;
-  };
-}
+import { Contract } from '@/types/contract';
 
 export default function Home() {
   const [selectedDeployedContract, setSelectedDeployedContract] = useState<Contract | null>(null);

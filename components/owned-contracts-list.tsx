@@ -10,35 +10,11 @@ import { useAccount } from 'wagmi';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { AddressDisplay } from '@/components/address-display';
-
-interface OwnedContract {
-  address: string;
-  name: string;
-  symbol: string;
-  totalSupply: string;
-  tokenType: string;
-  contractDeployer: string;
-  deployedBlockNumber: number;
-  chain: string;
-  chainId: number;
-  explorer: string;
-  opensea?: {
-    floorPrice: number;
-    collectionName: string;
-    safelistRequestStatus: string;
-    imageUrl: string;
-    description: string;
-    externalUrl: string;
-    twitterUsername: string;
-    discordUrl: string;
-    bannerImageUrl: string;
-    lastIngestedAt: string;
-  };
-}
+import { Contract } from '@/types/contract';
 
 interface OwnedContractsListProps {
-  selectedContract: OwnedContract | null;
-  onContractSelect: (contract: OwnedContract) => void;
+  selectedContract: Contract | null;
+  onContractSelect: (contract: Contract) => void;
 }
 
 const ITEMS_PER_PAGE = 6;

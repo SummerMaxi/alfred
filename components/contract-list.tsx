@@ -8,31 +8,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { FileText, Hash, Network, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import { cn } from '@/lib/utils';
-
-interface Contract {
-  address: string;
-  name: string;
-  symbol: string;
-  totalSupply: string;
-  tokenType: string;
-  contractDeployer: string;
-  deployedBlockNumber: number;
-  chain: string;
-  chainId: number;
-  explorer: string;
-  opensea?: {
-    floorPrice: number;
-    collectionName: string;
-    safelistRequestStatus: string;
-    imageUrl: string;
-    description: string;
-    externalUrl: string;
-    twitterUsername: string;
-    discordUrl: string;
-    bannerImageUrl: string;
-    lastIngestedAt: string;
-  };
-}
+import { Contract } from '@/types/contract';
 
 interface ContractListProps {
   selectedContract: Contract | null;

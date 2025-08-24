@@ -3,34 +3,10 @@
 import { config } from '@/lib/config';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
-
-interface OwnedContract {
-  address: string;
-  name: string;
-  symbol: string;
-  totalSupply: string;
-  tokenType: string;
-  contractDeployer: string;
-  deployedBlockNumber: number;
-  chain: string;
-  chainId: number;
-  explorer: string;
-  opensea?: {
-    floorPrice: number;
-    collectionName: string;
-    safelistRequestStatus: string;
-    imageUrl: string;
-    description: string;
-    externalUrl: string;
-    twitterUsername: string;
-    discordUrl: string;
-    bannerImageUrl: string;
-    lastIngestedAt: string;
-  };
-}
+import { Contract } from '@/types/contract';
 
 interface OwnedContractsResponse {
-  contracts: OwnedContract[];
+  contracts: Contract[];
   totalCount: number;
   pageKey?: string;
 }
@@ -51,7 +27,7 @@ export function useOwnedNftContracts() {
         throw new Error('No address or Alchemy key available');
       }
 
-      const allContracts: OwnedContract[] = [];
+      const allContracts: Contract[] = [];
 
       // Query each supported chain
       for (const chain of SUPPORTED_CHAINS) {
