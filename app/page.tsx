@@ -23,27 +23,8 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      <div className="text-center space-y-4">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Alfred</h1>
-        <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
-          {isArtistMode 
-            ? "Your NFT contract deployment dashboard. Connect your wallet to view and manage the NFT contracts you've deployed."
-            : "Your NFT collection dashboard. Connect your wallet to view NFT collections you own and their deployers."
-          }
-        </p>
-      </div>
 
       <div className="space-y-6">
-        <div className="flex items-center gap-2">
-          {isArtistMode ? (
-            <Palette className="h-6 w-6" />
-          ) : (
-            <User className="h-6 w-6" />
-          )}
-          <h2 className="text-2xl font-bold tracking-tight">
-            {isArtistMode ? "Your Deployed NFT Contracts" : "NFT Collections You Own"}
-          </h2>
-        </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:h-[600px]">
           {/* Left Column - Contract Lists */}

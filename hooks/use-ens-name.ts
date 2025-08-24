@@ -21,9 +21,9 @@ export function useENSName(address: string): ENSNameResult {
       try {
         const searchParams = new URLSearchParams({
           owner: address,
-          contractAddresses: JSON.stringify([ENS_CONTRACT_ADDRESS]),
+          'contractAddresses[]': ENS_CONTRACT_ADDRESS,
           withMetadata: 'true',
-          pageSize: '1',
+          pageSize: '10',
         });
         
         const url = `https://eth-mainnet.g.alchemy.com/nft/v3/${config.alchemyKey}/getNFTsForOwner?${searchParams}`;
@@ -41,10 +41,15 @@ export function useENSName(address: string): ENSNameResult {
 
         const data = await response.json();
         
-        // Return the first ENS name found, or null if none
+        // Look for ENS domains specifically - they have .eth in the title
         if (data.ownedNfts && data.ownedNfts.length > 0) {
-          const ensNft = data.ownedNfts[0];
-          return ensNft.title || ensNft.name || null;
+          for (const nft of data.ownedNfts) {
+            const title = nft.title || nft.name;
+            // ENS domains should end with .eth and have "an ENS name" in description
+            if (title && title.includes('.eth') && nft.description && nft.description.includes('an ENS name')) {
+              return title;
+            }
+          }
         }
         
         return null;
