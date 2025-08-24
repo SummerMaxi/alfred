@@ -30,6 +30,26 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Claude API key not configured' }, { status: 500 });
     }
 
+    // Check if no wallet is connected and no address provided
+    const hasWalletData = userData?.address || 
+                         (userData?.deployedContracts?.length > 0) || 
+                         (userData?.ownedContracts?.length > 0) ||
+                         (userData?.allOwners?.length > 0);
+
+    // If no wallet connection or data, provide witty response about connecting
+    if (!hasWalletData) {
+      const wittyResponses = [
+        "Good day! I'm afraid I cannot perform my duties as your personal NFT connoisseur without access to your blockchain presence. Might I suggest connecting your digital wallet so I may properly attend to your NFT empire?",
+        "I regret to inform you that my blockchain vision remains quite clouded without a connected wallet, Master. It's rather like trying to assess the Wayne Manor art collection while blindfolded.",
+        "Ah, Master, it appears we have a slight predicament - your digital identity remains a mystery to me. Perhaps you could connect your wallet, or enter an address manually? I do so hate working in the dark.",
+        "I'm afraid my NFT analysis powers are rather limited when I cannot see your blockchain activities, Master. Shall we remedy this by connecting a wallet or entering an address manually?",
+        "Master, without access to your wallet or a manual address, I'm reduced to merely an ornamental blockchain butler. Quite undignified, I must say. Might we establish a connection?"
+      ];
+      
+      const randomResponse = wittyResponses[Math.floor(Math.random() * wittyResponses.length)];
+      return NextResponse.json({ reply: randomResponse });
+    }
+
     // Determine user's name from ENS (without .eth) or use "Master" as default
     let userName = "Master";
     if (userData?.ensName) {
