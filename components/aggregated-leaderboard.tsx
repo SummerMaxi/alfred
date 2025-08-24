@@ -1,0 +1,150 @@
+'use client';
+
+import { useState } from 'react';
+import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { ChevronLeft, ChevronRight, Copy, ExternalLink, Users, Trophy } from 'lucide-react';
+import { toast } from 'sonner';
+import Link from 'next/link';
+
+const ITEMS_PER_PAGE = 20;
+
+export function AggregatedLeaderboard() {
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data, isLoading, error } = useAllNftOwners();
+
+  const copyAddress = (address: string) => {
+    navigator.clipboard.writeText(address);
+    toast.success('Address copied to clipboard');
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-2">
+        {Array.from({ length: 10 }).map((_, i) => (
+          <Card key={i} className="p-3">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <Skeleton className="w-6 h-6 rounded-full" />
+                <Skeleton className="h-4 w-48" />
+              </div>
+              <Skeleton className="h-5 w-16" />
+            </div>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <div className="text-destructive text-sm mb-2">Error loading leaderboard</div>
+        <p className="text-muted-foreground text-sm">{error.message}</p>
+      </div>
+    );
+  }
+
+  if (!data?.owners || data.owners.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <Trophy className="mx-auto h-10 w-10 text-muted-foreground mb-4" />
+        <h3 className="text-lg font-semibold text-muted-foreground">No NFT Owners Found</h3>
+        <p className="text-sm text-muted-foreground mt-2">
+          Your deployed contracts don't have any NFT owners yet
+        </p>
+      </div>
+    );
+  }
+
+  // Pagination logic
+  const totalPages = Math.ceil(data.owners.length / ITEMS_PER_PAGE);
+  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const currentOwners = data.owners.slice(startIndex, endIndex);
+
+  return (
+    <div className="space-y-3">
+      {/* Leaderboard List */}
+      <div className="space-y-2">
+        {currentOwners.map((owner, index) => {
+          const rank = startIndex + index + 1;
+          const getRankIcon = () => {
+            if (rank === 1) return '🥇';
+            if (rank === 2) return '🥈';
+            if (rank === 3) return '🥉';
+            return `#${rank}`;
+          };
+
+          return (
+            <Card key={owner.ownerAddress} className="p-3 hover:bg-muted/30 transition-colors">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center justify-center w-6 h-6 text-sm font-bold">
+                    {getRankIcon()}
+                  </div>
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <code className="text-sm font-mono">
+                        {owner.ownerAddress.slice(0, 6)}...{owner.ownerAddress.slice(-4)}
+                      </code>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => copyAddress(owner.ownerAddress)}
+                        className="h-5 w-5 p-0"
+                      >
+                        <Copy className="h-3 w-3" />
+                      </Button>
+                    </div>
+                    {owner.contractsOwned.length > 1 && (
+                      <div className="text-xs text-muted-foreground">
+                        Owns from {owner.contractsOwned.length} contracts
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <Badge variant="secondary" className="font-mono text-sm">
+                  {owner.totalNfts} NFTs
+                </Badge>
+              </div>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-between pt-2">
+          <div className="text-sm text-muted-foreground">
+            Showing {startIndex + 1}-{Math.min(endIndex, data.owners.length)} of {data.owners.length}
+          </div>
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            <span className="text-sm font-medium px-2">
+              {currentPage} / {totalPages}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+              disabled={currentPage === totalPages}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

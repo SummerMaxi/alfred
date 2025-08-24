@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { ContractList } from '@/components/contract-list';
-import { NftOwners } from '@/components/nft-owners';
+import { AggregatedLeaderboard } from '@/components/aggregated-leaderboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
+import { useAllNftOwners } from '@/hooks/use-all-nft-owners';
+import { Trophy, Users } from 'lucide-react';
 
 interface Contract {
   address: string;
@@ -33,6 +34,7 @@ interface Contract {
 
 export default function Home() {
   const [selectedContract, setSelectedContract] = useState<Contract | null>(null);
+  const { data: ownersData } = useAllNftOwners();
 
   return (
     <div className="space-y-8">
@@ -50,7 +52,10 @@ export default function Home() {
           {/* Left Column - Contract List */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">Deployed Contracts</CardTitle>
+              <CardTitle className="text-lg flex items-center gap-2">
+                <Users className="h-5 w-5" />
+                Deployed Contracts
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <ContractList 
@@ -60,18 +65,23 @@ export default function Home() {
             </CardContent>
           </Card>
 
-          {/* Right Column - NFT Owners */}
+          {/* Right Column - Aggregated Leaderboard */}
           <Card>
             <CardHeader>
-              <CardTitle className="text-lg">NFT Owners</CardTitle>
+              <CardTitle className="text-lg flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Trophy className="h-5 w-5" />
+                  NFT Owners Leaderboard
+                </div>
+                {ownersData && (
+                  <div className="text-sm font-normal text-muted-foreground">
+                    {ownersData.totalUniqueOwners} unique owners
+                  </div>
+                )}
+              </CardTitle>
             </CardHeader>
             <CardContent>
-              <NftOwners 
-                contractAddress={selectedContract?.address || ''}
-                contractName={selectedContract?.opensea?.collectionName || selectedContract?.name || 'Contract'}
-                chainName={selectedContract?.chain || ''}
-                explorerUrl={selectedContract?.explorer || 'https://etherscan.io'}
-              />
+              <AggregatedLeaderboard />
             </CardContent>
           </Card>
         </div>
