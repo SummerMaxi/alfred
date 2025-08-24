@@ -3,7 +3,7 @@
 import { useNftContracts } from '@/hooks/use-nft-contracts';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { ExternalLink, FileText, Calendar, Hash } from 'lucide-react';
+import { ExternalLink, FileText, Calendar, Hash, Network } from 'lucide-react';
 import { useAccount } from 'wagmi';
 import Link from 'next/link';
 
@@ -88,41 +88,60 @@ export function NftContracts() {
             className="border rounded-lg p-4 hover:bg-muted/50 transition-colors"
           >
             <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <div className="space-y-1">
-                  <h3 className="font-semibold text-lg">
-                    {contract.opensea?.collectionName || contract.name || 'Unnamed Contract'}
-                  </h3>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Hash className="h-3 w-3" />
-                    <code className="text-xs font-mono">{contract.address}</code>
-                    <Link
-                      href={`https://etherscan.io/address/${contract.address}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="hover:text-foreground"
-                    >
-                      <ExternalLink className="h-3 w-3" />
-                    </Link>
+              <div className="flex items-start justify-between">
+                <div className="space-y-2 flex-1">
+                  <div className="space-y-1">
+                    <h3 className="font-semibold text-lg">
+                      {contract.opensea?.collectionName || contract.name || 'Unnamed Contract'}
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Hash className="h-3 w-3" />
+                      <code className="text-xs font-mono">{contract.address}</code>
+                      <Link
+                        href={`${contract.explorer || 'https://etherscan.io'}/address/${contract.address}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-foreground"
+                      >
+                        <ExternalLink className="h-3 w-3" />
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  {/* Token type and symbol moved to left */}
+                  <div className="flex items-center gap-2">
+                    <Badge variant="secondary" className="text-xs">
+                      {contract.tokenType}
+                    </Badge>
+                    {contract.symbol && (
+                      <Badge variant="outline" className="text-xs font-mono">
+                        {contract.symbol}
+                      </Badge>
+                    )}
                   </div>
                 </div>
-                <div className="text-right space-y-1">
-                  <Badge variant="secondary" className="text-xs">
-                    {contract.tokenType}
-                  </Badge>
-                  {contract.symbol && (
-                    <div className="text-sm text-muted-foreground font-mono">
-                      {contract.symbol}
+                
+                {/* NFT count and network moved to right */}
+                <div className="text-right space-y-2 ml-4">
+                  <div className="flex flex-col items-end gap-1">
+                    <div className="flex items-center gap-1 text-sm font-medium">
+                      <FileText className="h-3 w-3" />
+                      <span>
+                        {contract.totalSupply === 'Multiple' || contract.tokenType === 'ERC1155' 
+                          ? 'Multiple' 
+                          : parseInt(contract.totalSupply || '0').toLocaleString()
+                        } NFTs
+                      </span>
                     </div>
-                  )}
+                    <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                      <Network className="h-3 w-3" />
+                      <span>{contract.chain}</span>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                <div className="flex items-center gap-1">
-                  <FileText className="h-3 w-3" />
-                  <span>{parseInt(contract.totalSupply).toLocaleString()} total supply</span>
-                </div>
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3 w-3" />
                   <span>Block #{contract.deployedBlockNumber.toLocaleString()}</span>
