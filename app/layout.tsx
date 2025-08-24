@@ -18,11 +18,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'Alfred - Shape Network',
-    template: '%s | Alfred - Shape Network',
+    default: 'MintShare.fun - NFT Analytics & Marketplace',
+    template: '%s | MintShare.fun',
   },
   description:
-    'Alfred - A modern NFT dashboard for viewing and managing your digital assets on Shape Network. Connect your wallet to explore your NFT collections.',
+    'MintShare.fun - Your personal NFT marketplace and analytics platform powered by Alfred AI. Analyze collections, discover artists, and share mint opportunities across multiple chains.',
   keywords: [
     'web3',
     'blockchain',
@@ -41,24 +41,24 @@ export const metadata: Metadata = {
     'smart contracts',
     'wallet connect',
   ],
-  metadataBase: new URL('https://alfred.vercel.app'),
+  metadataBase: new URL('https://mintshare.fun'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://alfred.vercel.app',
-    title: 'Alfred - Shape Network',
+    url: 'https://mintshare.fun',
+    title: 'MintShare.fun - NFT Analytics & Marketplace',
     description:
-      'Alfred - A modern NFT dashboard for viewing and managing your digital assets on Shape Network. Connect your wallet to explore your NFT collections.',
-    siteName: 'Alfred',
+      'MintShare.fun - Your personal NFT marketplace and analytics platform powered by Alfred AI. Analyze collections, discover artists, and share mint opportunities across multiple chains.',
+    siteName: 'MintShare.fun',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Alfred - Shape Network',
+    title: 'MintShare.fun - NFT Analytics & Marketplace',
     description:
-      'A modern & minimal web3 starter kit for building decentralized applications with Next.js, Wagmi, and Shape Network.',
+      'Your personal NFT marketplace and analytics platform powered by Alfred AI. Analyze collections, discover artists, and share mint opportunities.',
     site: '@Shape_L2',
     creator: '@Shape_L2',
   },
@@ -92,7 +92,7 @@ export default function RootLayout({
             <header className="border-b">
               <div className="container mx-auto flex h-16 items-center justify-between px-4">
                 <Link href="/" className="flex items-center">
-                  <h1 className="text-2xl font-bold">Alfred</h1>
+                  <h1 className="text-2xl font-bold">MintShare</h1>
                 </Link>
                 <div className="flex items-center gap-3">
                   <ThemeToggle />

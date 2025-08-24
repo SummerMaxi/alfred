@@ -1,15 +1,15 @@
-# Alfred NFT Assistant
+# MintShare.fun
 
-Your distinguished personal NFT connoisseur and blockchain butler. Alfred is an AI-powered NFT marketplace and analytics platform that provides detailed insights for both collectors and artists across multiple blockchain networks.
+Your distinguished personal NFT marketplace and analytics platform. Powered by Alfred, your AI NFT connoisseur and blockchain butler, MintShare.fun provides detailed insights for both collectors and artists across multiple blockchain networks.
 
 <table width="100%">
   <tr>
-    <td width="50%"><img src="./public/lp-1.png" alt="Alfred NFT Assistant Screenshot 1" width="100%"/></td>
-    <td width="50%"><img src="./public/lp-2.png" alt="Alfred NFT Assistant Screenshot 2" width="100%"/></td>
+    <td width="50%"><img src="./public/lp-1.png" alt="MintShare.fun Screenshot 1" width="100%"/></td>
+    <td width="50%"><img src="./public/lp-2.png" alt="MintShare.fun Screenshot 2" width="100%"/></td>
   </tr>
 </table>
 
-See deployed website: [alfred-brown.vercel.app](https://alfred-brown.vercel.app/)
+See deployed website: [mintshare.fun](https://mintshare.fun)
 
 ## ✨ Features
 
@@ -189,15 +189,15 @@ See deployed website: [alfred-brown.vercel.app](https://alfred-brown.vercel.app/
 
 ## 🔮 Future Roadmap
 
-Alfred is continuously evolving to become the ultimate NFT ecosystem platform. Here's what's coming next:
+MintShare.fun is continuously evolving to become the ultimate NFT ecosystem platform. Here's what's coming next:
 
 ### 🎨 NFT Mint Sharing Platform
 - **Collaborative Minting**: Enable collectors and artists to co-create and mint NFTs
-- **Data-Driven Collections**: Use Alfred's analytics to inform new NFT collection strategies
+- **Data-Driven Collections**: Use MintShare's analytics to inform new NFT collection strategies
 - **Community Curation**: Leverage collector insights to guide artistic direction
 
 ### 🔍 AI-Powered Artist Discovery
-- **Talent Scouting**: Use Alfred's vast collector and market data to identify emerging artists
+- **Talent Scouting**: Use MintShare's vast collector and market data to identify emerging artists
 - **Predictive Analytics**: Forecast which artists and styles are gaining traction
 - **Collector-Artist Matching**: Connect collectors with artists based on preference patterns
 - **Market Opportunity Identification**: Spot undervalued artists before they break out
@@ -208,11 +208,11 @@ Alfred is continuously evolving to become the ultimate NFT ecosystem platform. H
 - **Investment Scoring**: Rate NFT investments based on artist performance and collector behavior
 
 ### 🤝 Marketplace Integration
-- **Direct Trading**: Enable NFT transactions within the Alfred platform
+- **Direct Trading**: Enable NFT transactions within the MintShare platform
 - **Smart Contracts**: Automated royalty distribution and revenue sharing
 - **Cross-Chain Bridging**: Seamless NFT transfers between supported networks
 
-Stay tuned as Alfred transforms from analytics assistant to complete NFT ecosystem orchestrator!
+Stay tuned as MintShare.fun transforms from analytics platform to complete NFT ecosystem orchestrator!
 
 ## 🤝 Contributing
 
