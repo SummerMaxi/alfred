@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-type InterfaceMode = 'autonomous' | 'manual';
+type InterfaceMode = 'alfred' | 'manual';
 
 interface InterfaceModeContextType {
   interfaceMode: InterfaceMode;
@@ -12,7 +12,7 @@ interface InterfaceModeContextType {
 const InterfaceModeContext = createContext<InterfaceModeContextType | undefined>(undefined);
 
 export function InterfaceModeProvider({ children }: { children: ReactNode }) {
-  const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>('manual');
+  const [interfaceMode, setInterfaceMode] = useState<InterfaceMode>('alfred');
 
   return (
     <InterfaceModeContext.Provider value={{ interfaceMode, setInterfaceMode }}>

@@ -3,7 +3,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
+import { Badge } from '@/components/ui/badge';
 import { useAccount } from 'wagmi';
 import { useENSName } from '@/hooks/use-ens-name';
 import { useNftContracts } from '@/hooks/use-nft-contracts';
@@ -133,76 +135,106 @@ export function AutonomousInterface() {
   };
 
   return (
-    <div className="flex flex-col h-[600px] max-w-4xl mx-auto">
-      <div className="text-center py-6 border-b">
-        <div className="flex items-center justify-center gap-2 mb-2">
-          <Bot className="h-8 w-8" />
-          <h1 className="text-2xl font-bold">Alfred AI Assistant</h1>
-        </div>
-        <p className="text-muted-foreground">
-          Your personal blockchain butler, ready to assist with NFT data analysis
-        </p>
-      </div>
-
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={cn(
-              "flex gap-3 max-w-[80%]",
-              message.role === 'user' ? 'ml-auto' : 'mr-auto'
+    <div className="flex items-center justify-center p-6 min-h-[calc(100vh-8rem)]">
+      <div className="w-full max-w-4xl h-[600px] border rounded-lg shadow-lg bg-background flex flex-col">
+        <div className="flex-1 overflow-y-auto">
+          <div className="p-4 space-y-6">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={cn(
+                  "flex gap-4 items-start",
+                  message.role === 'user' ? 'flex-row-reverse' : 'flex-row'
+                )}
+              >
+                <Avatar className="h-8 w-8 shrink-0 mt-1">
+                  <AvatarFallback className={cn(
+                    "text-xs font-semibold",
+                    message.role === 'user' 
+                      ? 'bg-primary text-primary-foreground' 
+                      : 'bg-muted text-muted-foreground'
+                  )}>
+                    {message.role === 'user' ? 'U' : 'A'}
+                  </AvatarFallback>
+                </Avatar>
+                
+                <div className={cn(
+                  "max-w-[85%] rounded-2xl px-4 py-3 shadow-sm",
+                  message.role === 'user' 
+                    ? 'bg-primary text-primary-foreground ml-auto' 
+                    : 'bg-muted mr-auto'
+                )}>
+                  <div className="whitespace-pre-wrap text-sm leading-relaxed">
+                    {message.content}
+                  </div>
+                  <div className={cn(
+                    "text-xs mt-2 opacity-60 font-medium",
+                    message.role === 'user' 
+                      ? 'text-primary-foreground/60 text-right' 
+                      : 'text-muted-foreground'
+                  )}>
+                    {message.timestamp.toLocaleTimeString([], { 
+                      hour: '2-digit', 
+                      minute: '2-digit' 
+                    })}
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div className="flex gap-4 items-start">
+                <Avatar className="h-8 w-8 shrink-0 mt-1">
+                  <AvatarFallback className="bg-muted text-muted-foreground text-xs font-semibold">
+                    A
+                  </AvatarFallback>
+                </Avatar>
+                <div className="max-w-[85%] rounded-2xl px-4 py-3 bg-muted shadow-sm mr-auto">
+                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <div className="flex gap-1">
+                      <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" 
+                           style={{animationDelay: '0ms'}} />
+                      <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" 
+                           style={{animationDelay: '150ms'}} />
+                      <div className="w-2 h-2 bg-muted-foreground/40 rounded-full animate-bounce" 
+                           style={{animationDelay: '300ms'}} />
+                    </div>
+                    Alfred is thinking...
+                  </div>
+                </div>
+              </div>
             )}
-          >
-            <Card className={cn(
-              "p-4",
-              message.role === 'user' 
-                ? 'bg-primary text-primary-foreground' 
-                : 'bg-muted'
-            )}>
-              <div className="whitespace-pre-wrap text-sm">
-                {message.content}
-              </div>
-              <div className={cn(
-                "text-xs mt-2 opacity-70",
-                message.role === 'user' ? 'text-primary-foreground/70' : 'text-muted-foreground'
-              )}>
-                {message.timestamp.toLocaleTimeString()}
-              </div>
-            </Card>
           </div>
-        ))}
-        {isLoading && (
-          <div className="flex gap-3 max-w-[80%] mr-auto">
-            <Card className="p-4 bg-muted">
-              <div className="text-sm">Alfred is thinking...</div>
-            </Card>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
+          <div ref={messagesEndRef} />
+        </div>
       </div>
 
-      <div className="border-t p-4">
-        <div className="flex gap-2">
-          <Input
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            placeholder="Ask Alfred about your NFT data..."
-            disabled={isLoading}
-            className="flex-1"
-          />
-          <Button 
-            onClick={handleSendMessage} 
-            disabled={!input.trim() || isLoading}
-            size="icon"
-          >
-            <Send className="h-4 w-4" />
-          </Button>
-        </div>
-        <div className="text-xs text-muted-foreground mt-2">
-          Press Enter to send • Alfred has access to all your NFT contracts and leaderboard data
+      <div className="border-t bg-background p-4">
+          <div className="flex gap-3">
+            <Input
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask Alfred about your NFT collections, collectors, or digital art insights..."
+              disabled={isLoading}
+              className="flex-1 h-12 rounded-2xl border-2 focus:border-primary/50 px-4"
+            />
+            <Button 
+              onClick={handleSendMessage} 
+              disabled={!input.trim() || isLoading}
+              size="lg"
+              className="h-12 px-6 rounded-2xl"
+            >
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="text-xs text-muted-foreground mt-2 text-center">
+            Press <Badge variant="outline" className="px-1 py-0 text-xs">Enter</Badge> to send • 
+            Your personal NFT connoisseur
+          </div>
         </div>
       </div>
     </div>
+  </div>
   );
 }
