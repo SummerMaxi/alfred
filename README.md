@@ -1,5 +1,9 @@
 # MintShare.fun
 
+## 🚀 Vision
+
+I envision MintShare to become something similar to Kaito for NFTs - a discovery platform for emerging artists based on their artwork quality and the collectors who have an eye for good art. This could unlock tremendous potential for NFTs in both art and functionality, creating a symbiotic ecosystem where both artists and collectors thrive. MintShare will be chain agnostic, helping you see across all blockchains while concentrating more on EVM chains.
+
 Your distinguished personal NFT marketplace and analytics platform. Powered by Alfred, your AI NFT connoisseur and blockchain butler, MintShare.fun provides detailed insights for both collectors and artists across multiple blockchain networks.
 
 🎬 **Watch Demo**: [MintShare.fun Screen Recording](https://www.youtube.com/watch?v=0tvpxF7sjMQ)
